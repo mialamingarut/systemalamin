@@ -35,7 +35,7 @@ export default function Sidebar() {
     <aside
       className={`bg-gradient-to-b from-primary-900 to-primary-800 text-white transition-all duration-300 ${
         collapsed ? 'w-20' : 'w-64'
-      } flex flex-col`}
+      } flex flex-col h-screen sticky top-0`}
     >
       <div className="p-6 flex items-center justify-between border-b border-white/10">
         {!collapsed && (
