@@ -36,8 +36,8 @@ export default function Navbar() {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between">
           <Link href="/" className="flex items-center space-x-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-primary-600 to-primary-700 rounded-xl flex items-center justify-center shadow-lg">
-              <span className="text-white font-bold text-xl">MA</span>
+            <div className="w-12 h-12 rounded-xl flex items-center justify-center overflow-hidden">
+              <img src="/assets/img/logo.png" alt="MI Al-Amin Logo" className="w-full h-full object-contain" />
             </div>
             <div>
               <h1 className="font-display font-bold text-xl text-primary-800">MI Al-Amin</h1>

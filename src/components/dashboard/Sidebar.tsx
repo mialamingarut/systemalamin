@@ -40,8 +40,8 @@ export default function Sidebar() {
       <div className="p-6 flex items-center justify-between border-b border-white/10">
         {!collapsed && (
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-gold-500 to-gold-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold">MA</span>
+            <div className="w-10 h-10 rounded-lg flex items-center justify-center overflow-hidden bg-white">
+              <img src="/assets/img/logo.png" alt="MI Al-Amin Logo" className="w-full h-full object-contain" />
             </div>
             <div>
               <h2 className="font-bold text-sm">ASMS</h2>

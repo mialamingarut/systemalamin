@@ -16,6 +16,9 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: "MI Al-Amin - Madrasah Ibtidaiyah Terdepan",
   description: "Sistem Manajemen Sekolah Madrasah Ibtidaiyah Al-Amin - Membentuk Generasi Qurani Berakhlak Mulia",
+  icons: {
+    icon: '/assets/img/favicon.ico',
+  },
 };
 
 export default function RootLayout({

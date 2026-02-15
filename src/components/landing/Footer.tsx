@@ -11,8 +11,8 @@ export default function Footer() {
           {/* Brand */}
           <div>
             <div className="flex items-center space-x-3 mb-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-gold-500 to-gold-600 rounded-xl flex items-center justify-center shadow-lg">
-                <span className="text-white font-bold text-xl">MA</span>
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center overflow-hidden bg-white shadow-lg">
+                <img src="/assets/img/logo.png" alt="MI Al-Amin Logo" className="w-full h-full object-contain" />
               </div>
               <div>
                 <h3 className="font-display font-bold text-xl">MI Al-Amin</h3>
