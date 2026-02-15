@@ -53,7 +53,7 @@ Value: OBsTc53SKNX0Vz9jiegQ7AqmyIZfhFCx
 #### Variable 3: NEXTAUTH_URL
 ```
 Name: NEXTAUTH_URL
-Value: https://siakadalamin.vercel.app
+Value: https://madrasahalamin.vercel.app
 ```
 
 #### Variable 4: NEXT_PUBLIC_APP_NAME
@@ -117,15 +117,11 @@ npx dotenv -e .env.production -- npx prisma db seed
 ### 1. Cek URL Vercel
 Setelah deploy, Anda akan dapat URL seperti:
 ```
-https://systemalamin.vercel.app
-```
-atau
-```
-https://systemalamin-xxx.vercel.app
+https://madrasahalamin.vercel.app
 ```
 
 ### 2. Update NEXTAUTH_URL (Jika Berbeda)
-Jika URL Anda berbeda dari `https://systemalamin.vercel.app`:
+Jika URL Anda berbeda dari `https://madrasahalamin.vercel.app`:
 
 1. Buka Vercel Dashboard → Project → Settings → Environment Variables
 2. Edit `NEXTAUTH_URL`
@@ -160,8 +156,7 @@ https://github.com/mialamingarut/systemalamin
 
 **Website URL:**
 ```
-https://systemalamin.vercel.app
-(atau URL yang Anda dapat dari Vercel)
+https://madrasahalamin.vercel.app
 ```
 
 **Login Credentials:**

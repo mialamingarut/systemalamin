@@ -65,7 +65,7 @@ DATABASE_URL=postgresql://postgres.qjliveyhaqaywhyxnakj:C8Mo7Vas9PmGSQH0@aws-1-a
 
 NEXTAUTH_SECRET=OBsTc53SKNX0Vz9jiegQ7AqmyIZfhFCx
 
-NEXTAUTH_URL=https://siakadalamin.vercel.app
+NEXTAUTH_URL=https://madrasahalamin.vercel.app
 
 NEXT_PUBLIC_APP_NAME=AL-AMIN School Management System
 
@@ -75,7 +75,7 @@ NEXT_PUBLIC_SCHOOL_NAME=Madrasah Ibtidaiyah Al-Amin
 **PENTING:** Tambahkan satu per satu:
 - Name: `DATABASE_URL`, Value: `postgresql://postgres.qjliveyhaqaywhyxnakj:C8Mo7Vas9PmGSQH0@aws-1-ap-northeast-1.pooler.supabase.com:5432/postgres`
 - Name: `NEXTAUTH_SECRET`, Value: `OBsTc53SKNX0Vz9jiegQ7AqmyIZfhFCx`
-- Name: `NEXTAUTH_URL`, Value: `https://systemalamin.vercel.app`
+- Name: `NEXTAUTH_URL`, Value: `https://madrasahalamin.vercel.app`
 - Name: `NEXT_PUBLIC_APP_NAME`, Value: `AL-AMIN School Management System`
 - Name: `NEXT_PUBLIC_SCHOOL_NAME`, Value: `Madrasah Ibtidaiyah Al-Amin`
 
@@ -91,15 +91,11 @@ NEXT_PUBLIC_SCHOOL_NAME=Madrasah Ibtidaiyah Al-Amin
 ### 1. Cek URL
 Anda akan dapat URL seperti:
 ```
-https://systemalamin.vercel.app
-```
-atau
-```
-https://systemalamin-xxx.vercel.app
+https://madrasahalamin.vercel.app
 ```
 
 ### 2. Update NEXTAUTH_URL (Jika Berbeda)
-Jika URL Anda berbeda dari `https://systemalamin.vercel.app`:
+Jika URL Anda berbeda dari `https://madrasahalamin.vercel.app`:
 
 1. Copy URL yang benar
 2. Vercel Dashboard → Settings → Environment Variables
@@ -134,8 +130,7 @@ https://github.com/mialamingarut/systemalamin
 
 **Website URL:**
 ```
-https://systemalamin.vercel.app
-(atau URL yang Anda dapat)
+https://madrasahalamin.vercel.app
 ```
 
 **Database:**
