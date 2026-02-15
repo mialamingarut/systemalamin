@@ -65,7 +65,7 @@ DATABASE_URL=postgresql://postgres.qjliveyhaqaywhyxnakj:C8Mo7Vas9PmGSQH0@aws-1-a
 
 NEXTAUTH_SECRET=OBsTc53SKNX0Vz9jiegQ7AqmyIZfhFCx
 
-NEXTAUTH_URL=https://systemalamin.vercel.app
+NEXTAUTH_URL=https://siakadalamin.vercel.app
 
 NEXT_PUBLIC_APP_NAME=AL-AMIN School Management System
 

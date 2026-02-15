@@ -53,7 +53,7 @@ Value: OBsTc53SKNX0Vz9jiegQ7AqmyIZfhFCx
 #### Variable 3: NEXTAUTH_URL
 ```
 Name: NEXTAUTH_URL
-Value: https://systemalamin.vercel.app
+Value: https://siakadalamin.vercel.app
 ```
 
 #### Variable 4: NEXT_PUBLIC_APP_NAME
