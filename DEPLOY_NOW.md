@@ -41,7 +41,7 @@ Klik **"Environment Variables"** dan tambahkan 5 variable ini:
 #### Variable 1: DATABASE_URL
 ```
 Name: DATABASE_URL
-Value: postgresql://postgres:C8Mo7Vas9PmGSQH0@db.qjliveyhaqaywhyxnakj.supabase.co:5432/postgres
+Value: postgresql://postgres.qjliveyhaqaywhyxnakj:C8Mo7Vas9PmGSQH0@aws-1-ap-northeast-1.pooler.supabase.com:5432/postgres
 ```
 
 #### Variable 2: NEXTAUTH_SECRET
