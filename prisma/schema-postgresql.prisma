@@ -1,0 +1,290 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  SUPER_ADMIN
+  ADMIN
+  TEACHER
+  PARENT
+  STUDENT
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  OVERDUE
+  CANCELLED
+}
+
+enum SPMBStatus {
+  REGISTERED
+  VERIFIED
+  TESTED
+  PASSED
+  FAILED
+  ENROLLED
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  password      String
+  name          String
+  role          Role      @default(ADMIN)
+  avatar        String?
+  isActive      Boolean   @default(true)
+  lastLogin     DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  deletedAt     DateTime?
+
+  teacher       Teacher?
+  parent        Parent?
+  activityLogs  ActivityLog[]
+
+  @@index([email])
+  @@index([role])
+}
+
+model AcademicYear {
+  id            String    @id @default(cuid())
+  name          String    @unique
+  startDate     DateTime
+  endDate       DateTime
+  isActive      Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  deletedAt     DateTime?
+
+  classes       Class[]
+  spmb          SPMBApplicant[]
+  invoices      Invoice[]
+  announcements Announcement[]
+
+  @@index([isActive])
+}
+
+model Teacher {
+  id            String    @id @default(cuid())
+  userId        String    @unique
+  nip           String    @unique
+  phone         String
+  address       String
+  dateOfBirth   DateTime
+  gender        Gender
+  joinDate      DateTime
+  subjects      String[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  deletedAt     DateTime?
+
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  classes       Class[]
+
+  @@index([nip])
+}
+
+model Student {
+  id              String    @id @default(cuid())
+  nis             String    @unique
+  nisn            String?   @unique
+  name            String
+  gender          Gender
+  dateOfBirth     DateTime
+  placeOfBirth    String
+  address         String
+  phone           String?
+  photo           String?
+  parentId        String
+  enrollmentDate  DateTime
+  isActive        Boolean   @default(true)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  deletedAt       DateTime?
+
+  parent          Parent    @relation(fields: [parentId], references: [id])
+  classStudents   ClassStudent[]
+  invoices        Invoice[]
+
+  @@index([nis])
+  @@index([parentId])
+}
+
+model Parent {
+  id            String    @id @default(cuid())
+  userId        String    @unique
+  fatherName    String
+  motherName    String
+  phone         String
+  address       String
+  occupation    String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  deletedAt     DateTime?
+
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  students      Student[]
+}
+
+model Class {
+  id              String    @id @default(cuid())
+  name            String
+  grade           Int
+  academicYearId  String
+  teacherId       String
+  capacity        Int       @default(30)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  deletedAt       DateTime?
+
+  academicYear    AcademicYear @relation(fields: [academicYearId], references: [id])
+  teacher         Teacher   @relation(fields: [teacherId], references: [id])
+  students        ClassStudent[]
+
+  @@unique([name, academicYearId])
+  @@index([academicYearId])
+  @@index([grade])
+}
+
+model ClassStudent {
+  id          String    @id @default(cuid())
+  classId     String
+  studentId   String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  class       Class     @relation(fields: [classId], references: [id], onDelete: Cascade)
+  student     Student   @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@unique([classId, studentId])
+  @@index([classId])
+  @@index([studentId])
+}
+
+model SPMBApplicant {
+  id                String      @id @default(cuid())
+  registrationNo    String      @unique
+  academicYearId    String
+  name              String
+  gender            Gender
+  dateOfBirth       DateTime
+  placeOfBirth      String
+  address           String
+  parentName        String
+  parentPhone       String
+  parentEmail       String?
+  previousSchool    String?
+  photo             String?
+  birthCertificate  String?
+  familyCard        String?
+  testScore         Float?
+  status            SPMBStatus  @default(REGISTERED)
+  notes             String?
+  registeredAt      DateTime    @default(now())
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  deletedAt         DateTime?
+
+  academicYear      AcademicYear @relation(fields: [academicYearId], references: [id])
+
+  @@index([registrationNo])
+  @@index([status])
+  @@index([academicYearId])
+}
+
+model Invoice {
+  id              String        @id @default(cuid())
+  invoiceNo       String        @unique
+  studentId       String
+  academicYearId  String
+  month           Int
+  year            Int
+  amount          Float
+  status          PaymentStatus @default(PENDING)
+  dueDate         DateTime
+  paidAt          DateTime?
+  paidAmount      Float?
+  notes           String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  deletedAt       DateTime?
+
+  student         Student       @relation(fields: [studentId], references: [id])
+  academicYear    AcademicYear  @relation(fields: [academicYearId], references: [id])
+
+  @@unique([studentId, month, year, academicYearId])
+  @@index([invoiceNo])
+  @@index([status])
+  @@index([studentId])
+}
+
+model Announcement {
+  id              String    @id @default(cuid())
+  title           String
+  content         String
+  academicYearId  String?
+  publishedAt     DateTime  @default(now())
+  isPinned        Boolean   @default(false)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  deletedAt       DateTime?
+
+  academicYear    AcademicYear? @relation(fields: [academicYearId], references: [id])
+
+  @@index([publishedAt])
+  @@index([isPinned])
+}
+
+model Activity {
+  id          String    @id @default(cuid())
+  title       String
+  description String
+  date        DateTime
+  location    String?
+  photos      String[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+
+  @@index([date])
+}
+
+model ActivityLog {
+  id          String    @id @default(cuid())
+  userId      String
+  action      String
+  entity      String
+  entityId    String?
+  details     String?
+  ipAddress   String?
+  userAgent   String?
+  createdAt   DateTime  @default(now())
+
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([createdAt])
+  @@index([entity])
+}
+
+model SystemConfig {
+  id          String    @id @default(cuid())
+  key         String    @unique
+  value       String
+  description String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([key])
+}
