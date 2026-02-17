@@ -348,40 +348,49 @@ export default function TeacherForm({ mode, initialData, onSuccess, onCancel }: 
           Photo
         </label>
         
+        <input
+          type="file"
+          id="photo"
+          accept="image/*"
+          onChange={handlePhotoChange}
+          className="hidden"
+        />
+        
         {photoPreview ? (
-          <div className="relative w-40 h-40 rounded-lg overflow-hidden border-2 border-gray-200">
-            <Image
-              src={photoPreview}
-              alt="Teacher photo"
-              fill
-              className="object-cover"
-            />
-            <button
-              type="button"
-              onClick={removePhoto}
-              className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
-            >
-              <X className="w-4 h-4" />
-            </button>
-          </div>
-        ) : (
-          <div className="relative">
-            <input
-              type="file"
-              id="photo"
-              accept="image/*"
-              onChange={handlePhotoChange}
-              className="hidden"
-            />
+          <div className="space-y-3">
+            <div className="relative w-40 h-40 rounded-lg overflow-hidden border-2 border-gray-200">
+              <Image
+                src={photoPreview}
+                alt="Teacher photo"
+                fill
+                className="object-cover"
+              />
+              <button
+                type="button"
+                onClick={removePhoto}
+                className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors shadow-lg"
+                title="Hapus foto"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
             <label
               htmlFor="photo"
-              className="flex flex-col items-center justify-center w-40 h-40 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-primary-500 transition-colors"
+              className="inline-flex items-center space-x-2 px-4 py-2 bg-primary-600 text-white rounded-lg cursor-pointer hover:bg-primary-700 transition-colors text-sm font-medium"
             >
-              <Upload className="w-8 h-8 text-gray-400 mb-2" />
-              <span className="text-sm text-gray-500">Upload Photo</span>
-              <span className="text-xs text-gray-400 mt-1">Max 2MB</span>
+              <Upload className="w-4 h-4" />
+              <span>Gantikan Foto</span>
             </label>
           </div>
+        ) : (
+          <label
+            htmlFor="photo"
+            className="flex flex-col items-center justify-center w-40 h-40 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-primary-500 transition-colors"
+          >
+            <Upload className="w-8 h-8 text-gray-400 mb-2" />
+            <span className="text-sm text-gray-500">Upload Photo</span>
+            <span className="text-xs text-gray-400 mt-1">Max 2MB</span>
+          </label>
         )}
         <p className="text-sm text-gray-500 mt-2">
           Recommended: Square image, min 400x400px

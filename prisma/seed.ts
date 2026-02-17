@@ -61,6 +61,7 @@ async function main() {
       gender: 'MALE',
       joinDate: new Date('2010-07-01'),
       subjects: ['Matematika', 'IPA'], // PostgreSQL supports array directly
+      photo: null, // Photo can be uploaded later via dashboard
     },
   });
 
