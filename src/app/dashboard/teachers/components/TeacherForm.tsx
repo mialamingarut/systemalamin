@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useTransition } from 'react'
+import { useState, useTransition, useEffect } from 'react'
 import { createTeacher, updateTeacher, TeacherWithRelations } from '../actions'
 import { useToast } from '@/components/ui/Toast'
 import { Upload, X } from 'lucide-react'
@@ -36,8 +36,15 @@ export default function TeacherForm({ mode, initialData, onSuccess, onCancel }: 
   })
 
   const [photoFile, setPhotoFile] = useState<File | null>(null)
-  const [photoPreview, setPhotoPreview] = useState<string>(initialData?.photo || '')
+  const [photoPreview, setPhotoPreview] = useState<string>('')
   const [errors, setErrors] = useState<Record<string, string>>({})
+
+  // Set photo preview when editing
+  useEffect(() => {
+    if (mode === 'edit' && initialData?.photo) {
+      setPhotoPreview(initialData.photo)
+    }
+  }, [mode, initialData?.photo])
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
