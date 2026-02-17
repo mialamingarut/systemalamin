@@ -66,9 +66,9 @@ export default function CTASection() {
                   <Mail className="w-5 h-5 flex-shrink-0" />
                   <span>info@mialamin.sch.id</span>
                 </div>
-                <div className="flex items-center space-x-3 text-white/90">
-                  <MapPin className="w-5 h-5 flex-shrink-0" />
-                  <span>Jl. Pendidikan No. 123, Garut, Jawa Barat</span>
+                <div className="flex items-start space-x-3 text-white/90">
+                  <MapPin className="w-5 h-5 flex-shrink-0 mt-0.5" />
+                  <span>Jl. Otista No.214, Langensari, Kec. Tarogong Kaler, Kabupaten Garut, Jawa Barat 44151</span>
                 </div>
               </div>
             </div>
