@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
+import { ToastProvider } from "@/components/ui/Toast";
+import { SessionProvider } from "next-auth/react";
 
 const inter = Inter({ 
   subsets: ["latin"],
@@ -28,7 +30,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="id" className={`${inter.variable} ${poppins.variable}`}>
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <SessionProvider>
+          <ToastProvider>
+            {children}
+          </ToastProvider>
+        </SessionProvider>
+      </body>
     </html>
   );
 }

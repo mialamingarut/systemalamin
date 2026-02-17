@@ -3,45 +3,21 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "sqlite"
+  url      = "file:./dev.db"
 }
 
-enum Role {
-  SUPER_ADMIN
-  ADMIN
-  TEACHER
-  PARENT
-  STUDENT
-}
-
-enum Gender {
-  MALE
-  FEMALE
-}
-
-enum PaymentStatus {
-  PENDING
-  PAID
-  OVERDUE
-  CANCELLED
-}
-
-enum SPMBStatus {
-  REGISTERED
-  VERIFIED
-  TESTED
-  PASSED
-  FAILED
-  ENROLLED
-}
+// Roles: SUPER_ADMIN, ADMIN, TEACHER, PARENT, STUDENT
+// Gender: MALE, FEMALE
+// PaymentStatus: PENDING, PAID, OVERDUE, CANCELLED
+// SPMBStatus: REGISTERED, VERIFIED, TESTED, PASSED, FAILED, ENROLLED
 
 model User {
   id            String    @id @default(cuid())
   email         String    @unique
   password      String
   name          String
-  role          Role      @default(ADMIN)
+  role          String    @default("ADMIN")
   avatar        String?
   isActive      Boolean   @default(true)
   lastLogin     DateTime?
@@ -52,9 +28,6 @@ model User {
   teacher       Teacher?
   parent        Parent?
   activityLogs  ActivityLog[]
-
-  @@index([email])
-  @@index([role])
 }
 
 model AcademicYear {
@@ -71,8 +44,7 @@ model AcademicYear {
   spmb          SPMBApplicant[]
   invoices      Invoice[]
   announcements Announcement[]
-
-  @@index([isActive])
+  calendarEvents CalendarEvent[]
 }
 
 model Teacher {
@@ -82,25 +54,23 @@ model Teacher {
   phone         String
   address       String
   dateOfBirth   DateTime
-  gender        Gender
+  gender        String
   joinDate      DateTime
-  subjects      String[]
+  subjects      String    // JSON string of array
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   deletedAt     DateTime?
 
   user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   classes       Class[]
-
-  @@index([nip])
 }
 
 model Student {
   id              String    @id @default(cuid())
   nis             String    @unique
-  nisn            String?   @unique
+  nisn            String?
   name            String
-  gender          Gender
+  gender          String
   dateOfBirth     DateTime
   placeOfBirth    String
   address         String
@@ -116,9 +86,6 @@ model Student {
   parent          Parent    @relation(fields: [parentId], references: [id])
   classStudents   ClassStudent[]
   invoices        Invoice[]
-
-  @@index([nis])
-  @@index([parentId])
 }
 
 model Parent {
@@ -151,10 +118,6 @@ model Class {
   academicYear    AcademicYear @relation(fields: [academicYearId], references: [id])
   teacher         Teacher   @relation(fields: [teacherId], references: [id])
   students        ClassStudent[]
-
-  @@unique([name, academicYearId])
-  @@index([academicYearId])
-  @@index([grade])
 }
 
 model ClassStudent {
@@ -166,10 +129,6 @@ model ClassStudent {
 
   class       Class     @relation(fields: [classId], references: [id], onDelete: Cascade)
   student     Student   @relation(fields: [studentId], references: [id], onDelete: Cascade)
-
-  @@unique([classId, studentId])
-  @@index([classId])
-  @@index([studentId])
 }
 
 model SPMBApplicant {
@@ -177,7 +136,7 @@ model SPMBApplicant {
   registrationNo    String      @unique
   academicYearId    String
   name              String
-  gender            Gender
+  gender            String
   dateOfBirth       DateTime
   placeOfBirth      String
   address           String
@@ -189,7 +148,7 @@ model SPMBApplicant {
   birthCertificate  String?
   familyCard        String?
   testScore         Float?
-  status            SPMBStatus  @default(REGISTERED)
+  status            String      @default("REGISTERED")
   notes             String?
   registeredAt      DateTime    @default(now())
   createdAt         DateTime    @default(now())
@@ -197,10 +156,6 @@ model SPMBApplicant {
   deletedAt         DateTime?
 
   academicYear      AcademicYear @relation(fields: [academicYearId], references: [id])
-
-  @@index([registrationNo])
-  @@index([status])
-  @@index([academicYearId])
 }
 
 model Invoice {
@@ -211,7 +166,7 @@ model Invoice {
   month           Int
   year            Int
   amount          Float
-  status          PaymentStatus @default(PENDING)
+  status          String        @default("PENDING")
   dueDate         DateTime
   paidAt          DateTime?
   paidAmount      Float?
@@ -222,11 +177,6 @@ model Invoice {
 
   student         Student       @relation(fields: [studentId], references: [id])
   academicYear    AcademicYear  @relation(fields: [academicYearId], references: [id])
-
-  @@unique([studentId, month, year, academicYearId])
-  @@index([invoiceNo])
-  @@index([status])
-  @@index([studentId])
 }
 
 model Announcement {
@@ -241,9 +191,6 @@ model Announcement {
   deletedAt       DateTime?
 
   academicYear    AcademicYear? @relation(fields: [academicYearId], references: [id])
-
-  @@index([publishedAt])
-  @@index([isPinned])
 }
 
 model Activity {
@@ -252,12 +199,23 @@ model Activity {
   description String
   date        DateTime
   location    String?
-  photos      String[]
+  photos      String    // JSON string of array
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   deletedAt   DateTime?
+}
 
-  @@index([date])
+model CalendarEvent {
+  id              String    @id @default(cuid())
+  title           String
+  description     String
+  date            DateTime
+  academicYearId  String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  deletedAt       DateTime?
+
+  academicYear    AcademicYear? @relation(fields: [academicYearId], references: [id])
 }
 
 model ActivityLog {
@@ -272,10 +230,6 @@ model ActivityLog {
   createdAt   DateTime  @default(now())
 
   user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([userId])
-  @@index([createdAt])
-  @@index([entity])
 }
 
 model SystemConfig {
@@ -285,6 +239,4 @@ model SystemConfig {
   description String?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-
-  @@index([key])
 }

@@ -2,10 +2,10 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { signIn } from 'next-auth/react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Mail, Lock, ArrowRight } from 'lucide-react';
-import { authenticate } from './actions';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -18,15 +18,21 @@ export default function LoginPage() {
     setLoading(true);
 
     const formData = new FormData(e.currentTarget);
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
     
     try {
-      const result = await authenticate(formData);
+      const result = await signIn('credentials', {
+        email,
+        password,
+        redirect: false,
+      });
       
-      if (result.success) {
+      if (result?.error) {
+        setError('Email atau password salah');
+      } else {
         router.push('/dashboard');
         router.refresh();
-      } else {
-        setError(result.error || 'Login gagal');
       }
     } catch (err) {
       setError('Terjadi kesalahan. Silakan coba lagi.');

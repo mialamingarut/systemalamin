@@ -40,13 +40,35 @@ export default function Sidebar() {
       <div className="p-6 flex items-center justify-between border-b border-white/10">
         {!collapsed && (
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-lg flex items-center justify-center overflow-hidden bg-white">
-              <img src="/assets/img/logo.png" alt="MI Al-Amin Logo" className="w-full h-full object-contain" />
+            <div className="w-12 h-12 rounded-lg flex items-center justify-center overflow-hidden">
+              <img 
+                src="/assets/img/logo.png" 
+                alt="MI Al-Amin Logo" 
+                className="w-full h-full object-contain"
+                onError={(e) => {
+                  // Fallback if logo fails to load
+                  e.currentTarget.style.display = 'none';
+                  e.currentTarget.parentElement!.innerHTML = '<span class="text-white font-bold text-xl">MA</span>';
+                }}
+              />
             </div>
             <div>
               <h2 className="font-bold text-sm">ASMS</h2>
               <p className="text-xs text-primary-200">Al-Amin</p>
             </div>
+          </div>
+        )}
+        {collapsed && (
+          <div className="w-12 h-12 rounded-lg flex items-center justify-center overflow-hidden mx-auto">
+            <img 
+              src="/assets/img/logo.png" 
+              alt="MI Al-Amin Logo" 
+              className="w-full h-full object-contain"
+              onError={(e) => {
+                e.currentTarget.style.display = 'none';
+                e.currentTarget.parentElement!.innerHTML = '<span class="text-white font-bold text-sm">MA</span>';
+              }}
+            />
           </div>
         )}
         <button

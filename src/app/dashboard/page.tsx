@@ -1,9 +1,12 @@
 import { Users, GraduationCap, DollarSign, FileText } from 'lucide-react';
+import { auth } from '@/lib/auth';
 import StatsCard from '@/components/dashboard/StatsCard';
 import RecentActivities from '@/components/dashboard/RecentActivities';
 import PaymentChart from '@/components/dashboard/PaymentChart';
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  const session = await auth();
+
   const stats = [
     {
       title: 'Total Siswa',
@@ -43,7 +46,9 @@ export default function DashboardPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-        <p className="text-gray-600 mt-1">Selamat datang di AL-AMIN School Management System</p>
+        <p className="text-gray-600 mt-1">
+          Selamat datang, {session?.user?.name || 'User'}! 👋
+        </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">

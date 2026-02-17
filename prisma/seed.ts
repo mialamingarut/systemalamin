@@ -60,7 +60,7 @@ async function main() {
       dateOfBirth: new Date('1985-01-01'),
       gender: 'MALE',
       joinDate: new Date('2010-07-01'),
-      subjects: ['Matematika', 'IPA'],
+      subjects: JSON.stringify(['Matematika', 'IPA']),
     },
   });
 

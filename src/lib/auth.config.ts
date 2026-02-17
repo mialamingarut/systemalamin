@@ -11,12 +11,20 @@ export const authConfig = {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
       const isOnDashboard = nextUrl.pathname.startsWith('/dashboard');
+      const isOnLogin = nextUrl.pathname === '/login';
+      
+      // Protect dashboard routes - require authentication
       if (isOnDashboard) {
         if (isLoggedIn) return true;
-        return false;
-      } else if (isLoggedIn) {
+        return false; // Will redirect to login page
+      }
+      
+      // Redirect to dashboard if accessing login page while authenticated
+      if (isOnLogin && isLoggedIn) {
         return Response.redirect(new URL('/dashboard', nextUrl));
       }
+      
+      // Allow access to all other pages (landing, SPMB register, etc.)
       return true;
     },
     async jwt({ token, user }) {

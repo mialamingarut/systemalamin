@@ -3,11 +3,13 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, User } from 'lucide-react';
+import { useSession } from 'next-auth/react';
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { data: session } = useSession();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -56,12 +58,22 @@ export default function Navbar() {
                 {item.label}
               </Link>
             ))}
-            <Link
-              href="/login"
-              className="px-6 py-2 bg-gradient-to-r from-primary-600 to-primary-700 text-white rounded-full hover:shadow-lg hover:scale-105 transition-all"
-            >
-              Login
-            </Link>
+            {session ? (
+              <Link
+                href="/dashboard"
+                className="flex items-center space-x-2 px-6 py-2 bg-gradient-to-r from-primary-600 to-primary-700 text-white rounded-full hover:shadow-lg hover:scale-105 transition-all"
+              >
+                <User size={18} />
+                <span>{session.user?.name || 'Dashboard'}</span>
+              </Link>
+            ) : (
+              <Link
+                href="/login"
+                className="px-6 py-2 bg-gradient-to-r from-primary-600 to-primary-700 text-white rounded-full hover:shadow-lg hover:scale-105 transition-all"
+              >
+                Login
+              </Link>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -90,12 +102,22 @@ export default function Navbar() {
                 {item.label}
               </Link>
             ))}
-            <Link
-              href="/login"
-              className="block mt-2 px-6 py-2 bg-gradient-to-r from-primary-600 to-primary-700 text-white rounded-full text-center"
-            >
-              Login
-            </Link>
+            {session ? (
+              <Link
+                href="/dashboard"
+                className="flex items-center justify-center space-x-2 mt-2 px-6 py-2 bg-gradient-to-r from-primary-600 to-primary-700 text-white rounded-full text-center"
+              >
+                <User size={18} />
+                <span>{session.user?.name || 'Dashboard'}</span>
+              </Link>
+            ) : (
+              <Link
+                href="/login"
+                className="block mt-2 px-6 py-2 bg-gradient-to-r from-primary-600 to-primary-700 text-white rounded-full text-center"
+              >
+                Login
+              </Link>
+            )}
           </motion.div>
         )}
       </div>
