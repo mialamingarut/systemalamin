@@ -240,6 +240,7 @@ export async function createTeacher(formData: FormData): Promise<ActionResult<Te
     })
 
     revalidatePath('/dashboard/teachers')
+    revalidatePath('/') // Revalidate landing page to show new teacher
 
     return {
       success: true,
@@ -387,6 +388,7 @@ export async function updateTeacher(
     })
 
     revalidatePath('/dashboard/teachers')
+    revalidatePath('/') // Revalidate landing page to show updated photo
 
     return {
       success: true,
