@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { ChevronRight, Play, Award, Users, BookOpen } from 'lucide-react';
+import CountUp from '@/components/ui/CountUp';
 
 export default function HeroSection() {
   return (
@@ -108,27 +109,33 @@ export default function HeroSection() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
+              transition={{ delay: 0.7, duration: 0.6 }}
               className="mt-12 grid grid-cols-3 gap-6"
             >
               <div className="text-center lg:text-left">
                 <div className="flex items-center justify-center lg:justify-start space-x-2 mb-1">
                   <Users className="w-5 h-5 text-primary-600" />
-                  <p className="font-bold text-2xl text-gray-900">500+</p>
+                  <p className="font-bold text-2xl text-gray-900">
+                    <CountUp end={500} suffix="+" />
+                  </p>
                 </div>
                 <p className="text-sm text-gray-600">Siswa Aktif</p>
               </div>
               <div className="text-center lg:text-left">
                 <div className="flex items-center justify-center lg:justify-start space-x-2 mb-1">
                   <BookOpen className="w-5 h-5 text-primary-600" />
-                  <p className="font-bold text-2xl text-gray-900">25+</p>
+                  <p className="font-bold text-2xl text-gray-900">
+                    <CountUp end={25} suffix="+" />
+                  </p>
                 </div>
                 <p className="text-sm text-gray-600">Guru Profesional</p>
               </div>
               <div className="text-center lg:text-left">
                 <div className="flex items-center justify-center lg:justify-start space-x-2 mb-1">
                   <Award className="w-5 h-5 text-primary-600" />
-                  <p className="font-bold text-2xl text-gray-900">15</p>
+                  <p className="font-bold text-2xl text-gray-900">
+                    <CountUp end={15} />
+                  </p>
                 </div>
                 <p className="text-sm text-gray-600">Tahun Berpengalaman</p>
               </div>

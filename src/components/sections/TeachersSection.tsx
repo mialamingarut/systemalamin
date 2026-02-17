@@ -3,6 +3,7 @@
 import { User, BookOpen, ArrowRight } from 'lucide-react';
 import AnimatedSection from '@/components/ui/AnimatedSection';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface Teacher {
   id: string;
@@ -10,6 +11,7 @@ interface Teacher {
     name: string;
   };
   subjects: string[];
+  photo: string | null;
   position?: string;
 }
 
@@ -48,9 +50,18 @@ export default function TeachersSection({ teachers }: TeachersSectionProps) {
                   <div className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-primary-200 h-full">
                     {/* Photo Section */}
                     <div className="relative h-64 bg-gradient-to-br from-primary-500 to-primary-700 overflow-hidden">
-                      <div className="w-full h-full flex items-center justify-center">
-                        <User className="w-24 h-24 text-white/50" />
-                      </div>
+                      {teacher.photo ? (
+                        <Image
+                          src={teacher.photo}
+                          alt={teacher.user.name}
+                          fill
+                          className="object-cover group-hover:scale-110 transition-transform duration-500"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center">
+                          <User className="w-24 h-24 text-white/50" />
+                        </div>
+                      )}
                       
                       {/* Overlay Gradient */}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />

@@ -3,6 +3,7 @@
 import { prisma } from '@/lib/prisma'
 import { revalidatePath } from 'next/cache'
 import { logActivity } from '@/lib/activity-log'
+import { saveUploadedFile } from '@/lib/upload'
 import bcrypt from 'bcryptjs'
 
 export interface TeacherWithRelations {
@@ -15,6 +16,7 @@ export interface TeacherWithRelations {
   gender: 'MALE' | 'FEMALE'
   joinDate: Date
   subjects: string[] // PostgreSQL array type
+  photo: string | null
   createdAt: Date
   updatedAt: Date
   deletedAt: Date | null
@@ -143,6 +145,17 @@ export async function createTeacher(formData: FormData): Promise<ActionResult<Te
     const joinDate = formData.get('joinDate') as string
     const subjectsStr = formData.get('subjects') as string
     const subjects = subjectsStr ? subjectsStr.split(',').map(s => s.trim()) : []
+    
+    // Handle photo upload
+    let photoUrl: string | null = null
+    const photoFile = formData.get('photo') as File | null
+    if (photoFile && photoFile.size > 0) {
+      try {
+        photoUrl = await saveUploadedFile(photoFile, 'teachers')
+      } catch (error) {
+        console.error('Failed to upload photo:', error)
+      }
+    }
 
     // Check for duplicate NIP
     const existingTeacherByNip = await prisma.teacher.findUnique({
@@ -194,6 +207,7 @@ export async function createTeacher(formData: FormData): Promise<ActionResult<Te
           gender,
           joinDate: new Date(joinDate),
           subjects, // PostgreSQL array - no need to stringify
+          photo: photoUrl,
         },
         include: {
           user: {
@@ -259,6 +273,21 @@ export async function updateTeacher(
     const joinDate = formData.get('joinDate') as string
     const subjectsStr = formData.get('subjects') as string
     const subjects = subjectsStr ? subjectsStr.split(',').map(s => s.trim()) : []
+    
+    // Handle photo upload
+    let photoUrl: string | null = null
+    const photoFile = formData.get('photo') as File | null
+    const existingPhotoUrl = formData.get('photoUrl') as string | null
+    
+    if (photoFile && photoFile.size > 0) {
+      try {
+        photoUrl = await saveUploadedFile(photoFile, 'teachers')
+      } catch (error) {
+        console.error('Failed to upload photo:', error)
+      }
+    } else if (existingPhotoUrl) {
+      photoUrl = existingPhotoUrl
+    }
 
     // Check if teacher exists
     const existingTeacher = await prisma.teacher.findUnique({
@@ -325,6 +354,7 @@ export async function updateTeacher(
           gender,
           joinDate: new Date(joinDate),
           subjects, // PostgreSQL array - no need to stringify
+          photo: photoUrl,
         },
         include: {
           user: {

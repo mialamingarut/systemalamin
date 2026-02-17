@@ -11,6 +11,7 @@ export async function getTeachersForLanding() {
       select: {
         id: true,
         subjects: true,
+        photo: true,
         user: {
           select: {
             name: true,

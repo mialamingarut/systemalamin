@@ -3,6 +3,8 @@
 import { useState, useTransition } from 'react'
 import { createTeacher, updateTeacher, TeacherWithRelations } from '../actions'
 import { useToast } from '@/components/ui/Toast'
+import { Upload, X } from 'lucide-react'
+import Image from 'next/image'
 
 interface TeacherFormProps {
   mode: 'create' | 'edit'
@@ -30,8 +32,11 @@ export default function TeacherForm({ mode, initialData, onSuccess, onCancel }: 
       ? new Date(initialData.joinDate).toISOString().split('T')[0] 
       : '',
     subjects: initialData?.subjects ? (Array.isArray(initialData.subjects) ? initialData.subjects.join(', ') : JSON.parse(initialData.subjects).join(', ')) : '',
+    photo: initialData?.photo || '',
   })
 
+  const [photoFile, setPhotoFile] = useState<File | null>(null)
+  const [photoPreview, setPhotoPreview] = useState<string>(initialData?.photo || '')
   const [errors, setErrors] = useState<Record<string, string>>({})
 
   const handleChange = (
@@ -44,6 +49,38 @@ export default function TeacherForm({ mode, initialData, onSuccess, onCancel }: 
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: '' }))
     }
+  }
+
+  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        toast.error('Please select an image file')
+        return
+      }
+      
+      // Validate file size (max 2MB)
+      if (file.size > 2 * 1024 * 1024) {
+        toast.error('Image size must be less than 2MB')
+        return
+      }
+
+      setPhotoFile(file)
+      
+      // Create preview
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setPhotoPreview(reader.result as string)
+      }
+      reader.readAsDataURL(file)
+    }
+  }
+
+  const removePhoto = () => {
+    setPhotoFile(null)
+    setPhotoPreview('')
+    setFormData(prev => ({ ...prev, photo: '' }))
   }
 
   const validate = () => {
@@ -92,6 +129,13 @@ export default function TeacherForm({ mode, initialData, onSuccess, onCancel }: 
         data.append('gender', formData.gender)
         data.append('joinDate', formData.joinDate)
         data.append('subjects', formData.subjects)
+        
+        // Add photo if uploaded
+        if (photoFile) {
+          data.append('photo', photoFile)
+        } else if (formData.photo) {
+          data.append('photoUrl', formData.photo)
+        }
 
         const result = mode === 'create'
           ? await createTeacher(data)
@@ -288,6 +332,52 @@ export default function TeacherForm({ mode, initialData, onSuccess, onCancel }: 
         />
         <p className="text-sm text-gray-500 mt-1">
           Separate multiple subjects with commas
+        </p>
+      </div>
+
+      {/* Photo Upload */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          Photo
+        </label>
+        
+        {photoPreview ? (
+          <div className="relative w-40 h-40 rounded-lg overflow-hidden border-2 border-gray-200">
+            <Image
+              src={photoPreview}
+              alt="Teacher photo"
+              fill
+              className="object-cover"
+            />
+            <button
+              type="button"
+              onClick={removePhoto}
+              className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        ) : (
+          <div className="relative">
+            <input
+              type="file"
+              id="photo"
+              accept="image/*"
+              onChange={handlePhotoChange}
+              className="hidden"
+            />
+            <label
+              htmlFor="photo"
+              className="flex flex-col items-center justify-center w-40 h-40 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-primary-500 transition-colors"
+            >
+              <Upload className="w-8 h-8 text-gray-400 mb-2" />
+              <span className="text-sm text-gray-500">Upload Photo</span>
+              <span className="text-xs text-gray-400 mt-1">Max 2MB</span>
+            </label>
+          </div>
+        )}
+        <p className="text-sm text-gray-500 mt-2">
+          Recommended: Square image, min 400x400px
         </p>
       </div>
 
