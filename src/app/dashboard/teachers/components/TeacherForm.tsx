@@ -29,7 +29,7 @@ export default function TeacherForm({ mode, initialData, onSuccess, onCancel }: 
     joinDate: initialData?.joinDate 
       ? new Date(initialData.joinDate).toISOString().split('T')[0] 
       : '',
-    subjects: initialData?.subjects ? JSON.parse(initialData.subjects).join(', ') : '',
+    subjects: initialData?.subjects ? (Array.isArray(initialData.subjects) ? initialData.subjects.join(', ') : JSON.parse(initialData.subjects).join(', ')) : '',
   })
 
   const [errors, setErrors] = useState<Record<string, string>>({})

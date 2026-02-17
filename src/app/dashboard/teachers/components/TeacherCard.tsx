@@ -58,7 +58,7 @@ export default function TeacherCard({ teacher, onEdit, onDelete, onDetail }: Tea
             <div className="mb-3">
               <p className="text-xs text-gray-500 mb-1">Mata Pelajaran:</p>
               <div className="flex flex-wrap gap-1">
-                {JSON.parse(teacher.subjects).map((subject: string, index: number) => (
+                {(Array.isArray(teacher.subjects) ? teacher.subjects : JSON.parse(teacher.subjects)).map((subject: string, index: number) => (
                   <span
                     key={index}
                     className="px-2 py-1 bg-primary-50 text-primary-700 rounded text-xs"

@@ -52,7 +52,7 @@ export default function TeacherList({ initialTeachers }: TeacherListProps) {
 
     const filtered = teachers.filter((teacher) => {
       const searchLower = searchTerm.toLowerCase()
-      const subjects = JSON.parse(teacher.subjects)
+      const subjects = Array.isArray(teacher.subjects) ? teacher.subjects : JSON.parse(teacher.subjects)
       return (
         teacher.user.name.toLowerCase().includes(searchLower) ||
         teacher.nip.toLowerCase().includes(searchLower) ||

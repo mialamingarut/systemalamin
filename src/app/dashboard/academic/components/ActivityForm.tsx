@@ -22,7 +22,7 @@ export function ActivityForm({ activity, academicYears, onClose, onSuccess }: Ac
   )
   const [location, setLocation] = useState(activity?.location || '')
   const [photos, setPhotos] = useState<string[]>(
-    activity?.photos ? JSON.parse(activity.photos) : []
+    activity?.photos ? (Array.isArray(activity.photos) ? activity.photos : JSON.parse(activity.photos)) : []
   )
   const [photoInput, setPhotoInput] = useState('')
   const [academicYearId, setAcademicYearId] = useState('')

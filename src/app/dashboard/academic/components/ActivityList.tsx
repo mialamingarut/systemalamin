@@ -177,7 +177,7 @@ export function ActivityList({ activities, academicYears, onUpdate }: ActivityLi
                 {viewingGallery.title}
               </h3>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                {JSON.parse(viewingGallery.photos).map((photo: string, index: number) => (
+                {(Array.isArray(viewingGallery.photos) ? viewingGallery.photos : JSON.parse(viewingGallery.photos)).map((photo: string, index: number) => (
                   <img
                     key={index}
                     src={photo}

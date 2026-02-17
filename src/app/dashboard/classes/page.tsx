@@ -2,6 +2,9 @@ import { getClasses, getTeachersForDropdown } from './actions'
 import ClassList from './components/ClassList'
 import ClassPageHeader from './components/ClassPageHeader'
 
+// Force dynamic rendering - don't pre-render at build time
+export const dynamic = 'force-dynamic'
+
 export default async function ClassesPage() {
   const [classes, teachers] = await Promise.all([
     getClasses(),

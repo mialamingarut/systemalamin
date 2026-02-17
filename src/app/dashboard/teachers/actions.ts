@@ -14,7 +14,7 @@ export interface TeacherWithRelations {
   dateOfBirth: Date
   gender: 'MALE' | 'FEMALE'
   joinDate: Date
-  subjects: string
+  subjects: string[] // PostgreSQL array type
   createdAt: Date
   updatedAt: Date
   deletedAt: Date | null
@@ -193,7 +193,7 @@ export async function createTeacher(formData: FormData): Promise<ActionResult<Te
           dateOfBirth: new Date(dateOfBirth),
           gender,
           joinDate: new Date(joinDate),
-          subjects: JSON.stringify(subjects),
+          subjects, // PostgreSQL array - no need to stringify
         },
         include: {
           user: {
@@ -324,7 +324,7 @@ export async function updateTeacher(
           dateOfBirth: new Date(dateOfBirth),
           gender,
           joinDate: new Date(joinDate),
-          subjects: JSON.stringify(subjects),
+          subjects, // PostgreSQL array - no need to stringify
         },
         include: {
           user: {
@@ -450,7 +450,7 @@ export async function updateTeacherSubjects(
   try {
     const teacher = await prisma.teacher.update({
       where: { id },
-      data: { subjects: JSON.stringify(subjects) },
+      data: { subjects }, // PostgreSQL array - no need to stringify
       include: {
         user: {
           select: {

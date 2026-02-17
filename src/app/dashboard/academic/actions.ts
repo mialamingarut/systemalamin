@@ -41,7 +41,7 @@ export interface ActivityWithRelations {
   description: string
   date: Date
   location: string | null
-  photos: string
+  photos: string[] // PostgreSQL array type
   createdAt: Date
   updatedAt: Date
   deletedAt: Date | null
@@ -387,7 +387,7 @@ export async function createActivity(data: {
         description: data.description,
         date: data.date,
         location: data.location,
-        photos: data.photos || '[]',
+        photos: data.photos ? JSON.parse(data.photos) : [], // Parse JSON string to array
       },
     })
 
@@ -425,9 +425,15 @@ export async function updateActivity(
   }
 ): Promise<ActionResult<void>> {
   try {
+    // Parse photos if provided
+    const updateData: any = { ...data }
+    if (data.photos) {
+      updateData.photos = JSON.parse(data.photos)
+    }
+    
     await prisma.activity.update({
       where: { id, deletedAt: null },
-      data,
+      data: updateData,
     })
 
     await logActivity({

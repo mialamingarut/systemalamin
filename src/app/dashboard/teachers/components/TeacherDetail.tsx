@@ -86,9 +86,9 @@ export default function TeacherDetail({ teacher, onEdit, onClose }: TeacherDetai
           <BookOpen size={20} />
           <span>Subjects</span>
         </h3>
-        {JSON.parse(teacher.subjects).length > 0 ? (
+        {(Array.isArray(teacher.subjects) ? teacher.subjects : JSON.parse(teacher.subjects)).length > 0 ? (
           <div className="flex flex-wrap gap-2">
-            {JSON.parse(teacher.subjects).map((subject: string, index: number) => (
+            {(Array.isArray(teacher.subjects) ? teacher.subjects : JSON.parse(teacher.subjects)).map((subject: string, index: number) => (
               <span
                 key={index}
                 className="px-3 py-2 bg-primary-50 text-primary-700 rounded-lg text-sm font-medium"
