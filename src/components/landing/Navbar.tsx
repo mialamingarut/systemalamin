@@ -24,6 +24,7 @@ export default function Navbar() {
     { label: 'Profil', href: '#profile' },
     { label: 'Program', href: '#program' },
     { label: 'Galeri', href: '#gallery' },
+    { label: 'Guru Kami', href: '#teachers' },
     { label: 'SPMB', href: '#spmb' },
   ];
 
