@@ -1,29 +1,29 @@
-import HeroSection from "@/components/landing/HeroSection";
-import ProfileSection from "@/components/landing/ProfileSection";
-import ProgramSection from "@/components/landing/ProgramSection";
-import StatsSection from "@/components/landing/StatsSection";
-import GallerySection from "@/components/landing/GallerySection";
-import TeachersSection from "@/components/landing/TeachersSection";
-import SPMBSection from "@/components/landing/SPMBSection";
-import TestimonialSection from "@/components/landing/TestimonialSection";
-import Footer from "@/components/landing/Footer";
-import Navbar from "@/components/landing/Navbar";
+import Navbar from "@/components/layout/Navbar";
+import HeroSection from "@/components/sections/HeroSection";
+import TrustSection from "@/components/sections/TrustSection";
+import AboutSection from "@/components/sections/AboutSection";
+import ProgramSection from "@/components/sections/ProgramSection";
+import TeachersSection from "@/components/sections/TeachersSection";
+import GallerySection from "@/components/sections/GallerySection";
+import TestimonialSection from "@/components/sections/TestimonialSection";
+import CTASection from "@/components/sections/CTASection";
+import Footer from "@/components/layout/Footer";
 import { getTeachersForLanding } from "@/app/actions/teachers";
 
 export default async function Home() {
   const teachers = await getTeachersForLanding();
 
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen bg-white">
       <Navbar />
       <HeroSection />
-      <ProfileSection />
+      <TrustSection />
+      <AboutSection />
       <ProgramSection />
-      <StatsSection />
-      <GallerySection />
       <TeachersSection teachers={teachers} />
-      <SPMBSection />
+      <GallerySection />
       <TestimonialSection />
+      <CTASection />
       <Footer />
     </main>
   );
