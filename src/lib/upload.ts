@@ -7,10 +7,14 @@ export async function saveUploadedFile(file: File, folder: string = 'teachers'):
     
     if (isVercel) {
       // Use Vercel Blob Storage in production
-      const blob = await put(`${folder}/${file.name}`, file, {
+      const timestamp = Date.now()
+      const originalName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_')
+      const filename = `${timestamp}-${originalName}`
+      
+      const blob = await put(`${folder}/${filename}`, file, {
         access: 'public',
-        token: process.env.BLOB_READ_WRITE_TOKEN,
       })
+      
       return blob.url
     } else {
       // Use local filesystem in development
