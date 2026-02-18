@@ -14,6 +14,7 @@ import {
   Settings,
   ChevronLeft,
   ChevronRight,
+  Globe,
 } from 'lucide-react';
 
 export default function Sidebar() {
@@ -28,6 +29,7 @@ export default function Sidebar() {
     { icon: FileText, label: 'SPMB', href: '/dashboard/spmb' },
     { icon: DollarSign, label: 'Keuangan', href: '/dashboard/finance' },
     { icon: Calendar, label: 'Akademik', href: '/dashboard/academic' },
+    { icon: Globe, label: 'Landing Page', href: '/dashboard/landing/hero' },
     { icon: Settings, label: 'Pengaturan', href: '/dashboard/settings' },
   ];
 
@@ -81,7 +83,7 @@ export default function Sidebar() {
 
       <nav className="flex-1 p-4 space-y-2">
         {menuItems.map((item) => {
-          const isActive = pathname === item.href;
+          const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
           return (
             <Link
               key={item.href}
