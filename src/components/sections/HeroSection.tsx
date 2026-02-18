@@ -11,6 +11,7 @@ type HeroSectionProps = {
     subheadline: string;
     ctaPrimary: string;
     ctaSecondary: string | null;
+    heroImage?: string | null;
   };
   stats: {
     students: number;
@@ -163,13 +164,43 @@ export default function HeroSection({ hero, stats }: HeroSectionProps) {
             className="relative hidden lg:block"
           >
             <div className="relative w-full h-[600px]">
-              {/* Placeholder for illustration - replace with actual image */}
-              <div className="absolute inset-0 bg-gradient-to-br from-primary-100 to-gold-100 rounded-3xl shadow-2xl flex items-center justify-center">
-                <div className="text-center p-8">
-                  <BookOpen className="w-32 h-32 text-primary-600 mx-auto mb-4 opacity-50" />
-                  <p className="text-gray-500 font-medium">Hero Illustration</p>
-                  <p className="text-sm text-gray-400 mt-2">Replace with actual image</p>
-                </div>
+              {/* Hero Image */}
+              <div className="absolute inset-0 rounded-3xl shadow-2xl overflow-hidden">
+                {hero.heroImage ? (
+                  <img
+                    src={hero.heroImage}
+                    alt="MI Al-Amin Hero"
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      // Fallback to placeholder if image fails to load
+                      e.currentTarget.style.display = 'none';
+                      const parent = e.currentTarget.parentElement;
+                      if (parent) {
+                        parent.innerHTML = `
+                          <div class="w-full h-full bg-gradient-to-br from-primary-100 to-gold-100 flex items-center justify-center">
+                            <div class="text-center p-8">
+                              <svg class="w-32 h-32 text-primary-600 mx-auto mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                              </svg>
+                              <p class="text-gray-500 font-medium">Hero Illustration</p>
+                              <p class="text-sm text-gray-400 mt-2">Upload gambar di Dashboard → Landing Page → Hero & Statistik</p>
+                            </div>
+                          </div>
+                        `;
+                      }
+                    }}
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gradient-to-br from-primary-100 to-gold-100 flex items-center justify-center">
+                    <div className="text-center p-8">
+                      <svg className="w-32 h-32 text-primary-600 mx-auto mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                      </svg>
+                      <p className="text-gray-500 font-medium">Hero Illustration</p>
+                      <p className="text-sm text-gray-400 mt-2">Upload gambar di Dashboard → Landing Page → Hero & Statistik</p>
+                    </div>
+                  </div>
+                )}
               </div>
               
               {/* Floating Cards */}

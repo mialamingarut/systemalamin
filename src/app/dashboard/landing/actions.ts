@@ -16,18 +16,36 @@ export async function getHero() {
   return await prisma.landingHero.findFirst({ where: { isActive: true } });
 }
 
-export async function updateHero(id: string, data: {
-  headline: string;
-  subheadline: string;
-  ctaPrimary: string;
-  ctaSecondary?: string;
-}) {
-  const result = await prisma.landingHero.update({
-    where: { id },
-    data,
-  });
-  revalidatePath('/');
-  return { success: true, data: result };
+export async function updateHero(id: string, formData: FormData) {
+  try {
+    const headline = formData.get('headline') as string;
+    const subheadline = formData.get('subheadline') as string;
+    const ctaPrimary = formData.get('ctaPrimary') as string;
+    const ctaSecondary = formData.get('ctaSecondary') as string;
+    const file = formData.get('file') as File | null;
+
+    const data: any = {
+      headline,
+      subheadline,
+      ctaPrimary,
+      ctaSecondary: ctaSecondary || null,
+    };
+
+    // Upload hero image if provided
+    if (file && file.size > 0) {
+      data.heroImage = await saveUploadedFile(file, 'hero');
+    }
+
+    const result = await prisma.landingHero.update({
+      where: { id },
+      data,
+    });
+
+    revalidatePath('/');
+    return { success: true, data: result };
+  } catch (error: any) {
+    return { success: false, error: error.message };
+  }
 }
 
 // Stats Actions

@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { updateHero, updateStats } from '../../actions';
 import { useToast } from '@/components/ui/Toast';
 import { Button } from '@/components/ui/Button';
+import { Upload, X } from 'lucide-react';
+import Image from 'next/image';
 
 type Hero = {
   id: string;
@@ -11,6 +13,7 @@ type Hero = {
   subheadline: string;
   ctaPrimary: string;
   ctaSecondary: string | null;
+  heroImage: string | null;
 };
 
 type Stats = {
@@ -22,7 +25,26 @@ type Stats = {
 
 export default function HeroStatsForm({ hero, stats }: { hero: Hero | null; stats: Stats | null }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [previewImage, setPreviewImage] = useState<string | null>(hero?.heroImage || null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const toast = useToast();
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImage(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setPreviewImage(null);
+    setSelectedFile(null);
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -33,13 +55,20 @@ export default function HeroStatsForm({ hero, stats }: { hero: Hero | null; stat
 
       // Update Hero
       if (hero) {
-        const heroData = {
-          headline: formData.get('headline') as string,
-          subheadline: formData.get('subheadline') as string,
-          ctaPrimary: formData.get('ctaPrimary') as string,
-          ctaSecondary: formData.get('ctaSecondary') as string,
-        };
-        await updateHero(hero.id, heroData);
+        const heroFormData = new FormData();
+        heroFormData.append('headline', formData.get('headline') as string);
+        heroFormData.append('subheadline', formData.get('subheadline') as string);
+        heroFormData.append('ctaPrimary', formData.get('ctaPrimary') as string);
+        heroFormData.append('ctaSecondary', formData.get('ctaSecondary') as string);
+        
+        if (selectedFile) {
+          heroFormData.append('file', selectedFile);
+        }
+
+        const result = await updateHero(hero.id, heroFormData);
+        if (!result.success) {
+          throw new Error(result.error);
+        }
       }
 
       // Update Stats
@@ -53,8 +82,8 @@ export default function HeroStatsForm({ hero, stats }: { hero: Hero | null; stat
       }
 
       toast.success('Berhasil menyimpan perubahan');
-    } catch (error) {
-      toast.error('Gagal menyimpan perubahan');
+    } catch (error: any) {
+      toast.error(error.message || 'Gagal menyimpan perubahan');
     } finally {
       setIsSubmitting(false);
     }
@@ -121,6 +150,50 @@ export default function HeroStatsForm({ hero, stats }: { hero: Hero | null; stat
               placeholder="Contoh: Pelajari Lebih Lanjut"
             />
           </div>
+        </div>
+
+        {/* Hero Image Upload */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Gambar Hero (Opsional)
+          </label>
+          
+          {previewImage ? (
+            <div className="relative w-full h-64 rounded-lg overflow-hidden border-2 border-gray-200">
+              <Image
+                src={previewImage}
+                alt="Hero preview"
+                fill
+                className="object-cover"
+              />
+              <button
+                type="button"
+                onClick={handleRemoveImage}
+                className="absolute top-2 right-2 p-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
+              >
+                <X size={16} />
+              </button>
+            </div>
+          ) : (
+            <label className="flex flex-col items-center justify-center w-full h-64 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-primary-500 transition-colors">
+              <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                <Upload className="w-12 h-12 text-gray-400 mb-3" />
+                <p className="mb-2 text-sm text-gray-500">
+                  <span className="font-semibold">Klik untuk upload</span> atau drag & drop
+                </p>
+                <p className="text-xs text-gray-500">PNG, JPG atau WEBP (Max 5MB)</p>
+              </div>
+              <input
+                type="file"
+                className="hidden"
+                accept="image/*"
+                onChange={handleImageChange}
+              />
+            </label>
+          )}
+          <p className="text-xs text-gray-500 mt-2">
+            Gambar akan ditampilkan di sisi kanan hero section (desktop)
+          </p>
         </div>
       </div>
 
