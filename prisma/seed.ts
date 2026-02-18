@@ -245,6 +245,100 @@ async function main() {
 
   console.log('✅ System config created');
 
+  // Seed Landing Page CMS Data
+  console.log('🌱 Seeding landing page CMS...');
+
+  // Landing Hero
+  await prisma.landingHero.upsert({
+    where: { id: 'default-hero' },
+    update: {},
+    create: {
+      id: 'default-hero',
+      headline: 'Generasi Qurani Berprestasi',
+      subheadline: 'Membentuk karakter islami dan prestasi akademik yang unggul untuk masa depan gemilang',
+      ctaPrimary: 'Daftar Sekarang',
+      ctaSecondary: 'Pelajari Lebih Lanjut',
+      isActive: true,
+    },
+  });
+
+  // Landing Stats
+  await prisma.landingStats.upsert({
+    where: { id: 'default-stats' },
+    update: {},
+    create: {
+      id: 'default-stats',
+      students: 500,
+      teachers: 25,
+      years: 15,
+      isActive: true,
+    },
+  });
+
+  // Landing Features
+  const features = [
+    {
+      title: 'Kurikulum Terintegrasi',
+      description: 'Memadukan kurikulum nasional dengan nilai-nilai islami untuk pembelajaran holistik',
+      icon: 'BookOpen',
+      order: 1,
+    },
+    {
+      title: 'Guru Berkualitas',
+      description: 'Tenaga pendidik profesional dan berpengalaman dengan dedikasi tinggi',
+      icon: 'Users',
+      order: 2,
+    },
+    {
+      title: 'Fasilitas Modern',
+      description: 'Ruang kelas nyaman, perpustakaan lengkap, dan laboratorium komputer',
+      icon: 'Building2',
+      order: 3,
+    },
+    {
+      title: 'Kegiatan Ekstrakurikuler',
+      description: 'Beragam kegiatan untuk mengembangkan bakat dan minat siswa',
+      icon: 'Trophy',
+      order: 4,
+    },
+  ];
+
+  for (const feature of features) {
+    await prisma.landingFeature.create({
+      data: feature,
+    });
+  }
+
+  // Landing Programs
+  const programs = [
+    {
+      title: 'Tahfidz Quran',
+      description: 'Program menghafal Al-Quran dengan metode yang menyenangkan dan efektif',
+      features: ['Target 2 Juz per tahun', 'Metode Ummi', 'Bimbingan intensif', 'Muroja\'ah rutin'],
+      order: 1,
+    },
+    {
+      title: 'Bahasa Arab & Inggris',
+      description: 'Pembelajaran bahasa asing sejak dini untuk komunikasi global',
+      features: ['Native speaker', 'Conversation class', 'Language lab', 'International curriculum'],
+      order: 2,
+    },
+    {
+      title: 'Sains & Teknologi',
+      description: 'Mengembangkan kemampuan sains dan teknologi untuk masa depan',
+      features: ['Laboratorium lengkap', 'Coding class', 'Robotika', 'Science project'],
+      order: 3,
+    },
+  ];
+
+  for (const program of programs) {
+    await prisma.landingProgram.create({
+      data: program,
+    });
+  }
+
+  console.log('✅ Landing page CMS seeded');
+
   console.log('🎉 Seeding completed!');
   console.log('\n📝 Login credentials:');
   console.log('Admin: admin@mialamin.sch.id / admin123');
@@ -260,3 +354,97 @@ main()
   .finally(async () => {
     await prisma.$disconnect();
   });
+
+  // Seed Landing Page CMS Data
+  console.log('🌱 Seeding landing page CMS...');
+
+  // Landing Hero
+  await prisma.landingHero.upsert({
+    where: { id: 'default-hero' },
+    update: {},
+    create: {
+      id: 'default-hero',
+      headline: 'Generasi Qurani Berprestasi',
+      subheadline: 'Membentuk karakter islami dan prestasi akademik yang unggul untuk masa depan gemilang',
+      ctaPrimary: 'Daftar Sekarang',
+      ctaSecondary: 'Pelajari Lebih Lanjut',
+      isActive: true,
+    },
+  });
+
+  // Landing Stats
+  await prisma.landingStats.upsert({
+    where: { id: 'default-stats' },
+    update: {},
+    create: {
+      id: 'default-stats',
+      students: 500,
+      teachers: 25,
+      years: 15,
+      isActive: true,
+    },
+  });
+
+  // Landing Features
+  const features = [
+    {
+      title: 'Kurikulum Terintegrasi',
+      description: 'Memadukan kurikulum nasional dengan nilai-nilai islami untuk pembelajaran holistik',
+      icon: 'BookOpen',
+      order: 1,
+    },
+    {
+      title: 'Guru Berkualitas',
+      description: 'Tenaga pendidik profesional dan berpengalaman dengan dedikasi tinggi',
+      icon: 'Users',
+      order: 2,
+    },
+    {
+      title: 'Fasilitas Modern',
+      description: 'Ruang kelas nyaman, perpustakaan lengkap, dan laboratorium komputer',
+      icon: 'Building2',
+      order: 3,
+    },
+    {
+      title: 'Kegiatan Ekstrakurikuler',
+      description: 'Beragam kegiatan untuk mengembangkan bakat dan minat siswa',
+      icon: 'Trophy',
+      order: 4,
+    },
+  ];
+
+  for (const feature of features) {
+    await prisma.landingFeature.create({
+      data: feature,
+    });
+  }
+
+  // Landing Programs
+  const programs = [
+    {
+      title: 'Tahfidz Quran',
+      description: 'Program menghafal Al-Quran dengan metode yang menyenangkan dan efektif',
+      features: ['Target 2 Juz per tahun', 'Metode Ummi', 'Bimbingan intensif', 'Muroja\'ah rutin'],
+      order: 1,
+    },
+    {
+      title: 'Bahasa Arab & Inggris',
+      description: 'Pembelajaran bahasa asing sejak dini untuk komunikasi global',
+      features: ['Native speaker', 'Conversation class', 'Language lab', 'International curriculum'],
+      order: 2,
+    },
+    {
+      title: 'Sains & Teknologi',
+      description: 'Mengembangkan kemampuan sains dan teknologi untuk masa depan',
+      features: ['Laboratorium lengkap', 'Coding class', 'Robotika', 'Science project'],
+      order: 3,
+    },
+  ];
+
+  for (const program of programs) {
+    await prisma.landingProgram.create({
+      data: program,
+    });
+  }
+
+  console.log('✅ Landing page CMS seeded');
