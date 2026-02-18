@@ -123,14 +123,18 @@ export default function SPMBRegisterPage() {
                   </li>
                   <li className="flex items-start">
                     <span className="font-semibold mr-2">2.</span>
-                    <span>Tim kami akan memverifikasi dokumen Anda dalam 1-3 hari kerja</span>
+                    <span>Jika belum upload dokumen, silakan lengkapi dengan menghubungi admin atau datang langsung ke sekolah</span>
                   </li>
                   <li className="flex items-start">
                     <span className="font-semibold mr-2">3.</span>
-                    <span>Anda akan dihubungi untuk jadwal tes masuk</span>
+                    <span>Tim kami akan memverifikasi data dan dokumen Anda dalam 1-3 hari kerja</span>
                   </li>
                   <li className="flex items-start">
                     <span className="font-semibold mr-2">4.</span>
+                    <span>Anda akan dihubungi untuk jadwal tes masuk</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="font-semibold mr-2">5.</span>
                     <span>Pengumuman hasil akan diinformasikan melalui telepon/email</span>
                   </li>
                 </ol>
@@ -368,16 +372,19 @@ export default function SPMBRegisterPage() {
               {step === 3 && (
                 <>
                   <h2 className="text-2xl font-bold text-gray-900 mb-6">Upload Dokumen</h2>
+                  <p className="text-sm text-gray-600 mb-6">
+                    Dokumen dapat diupload sekarang atau menyusul nanti. Anda dapat melengkapi dokumen setelah pendaftaran.
+                  </p>
                   <div className="space-y-6">
                     {[
-                      { label: 'Foto Calon Siswa', field: 'photo' as const, required: true },
-                      { label: 'Akta Kelahiran', field: 'birthCertificate' as const, required: true },
-                      { label: 'Kartu Keluarga', field: 'familyCard' as const, required: true },
+                      { label: 'Foto Calon Siswa', field: 'photo' as const, required: false },
+                      { label: 'Akta Kelahiran', field: 'birthCertificate' as const, required: false },
+                      { label: 'Kartu Keluarga', field: 'familyCard' as const, required: false },
                     ].map((doc) => (
                       <div key={doc.field} className="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-primary-500 transition-colors">
                         <Upload className="w-12 h-12 text-gray-400 mx-auto mb-3" />
                         <p className="text-sm font-medium text-gray-700 mb-1">
-                          {doc.label} {doc.required && <span className="text-red-500">*</span>}
+                          {doc.label} <span className="text-gray-400">(Opsional)</span>
                         </p>
                         {files[doc.field] && (
                           <p className="text-xs text-green-600 mb-2">
