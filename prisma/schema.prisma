@@ -389,3 +389,15 @@ model LandingTestimonial {
 
   @@index([order])
 }
+
+model LandingAbout {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  vision      String
+  mission     String[]
+  history     String
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

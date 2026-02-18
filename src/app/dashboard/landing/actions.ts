@@ -324,3 +324,24 @@ export async function deleteTestimonial(id: string) {
   revalidatePath('/');
   return { success: true };
 }
+
+
+// About Actions
+export async function getAbout() {
+  return await prisma.landingAbout.findFirst({ where: { isActive: true } });
+}
+
+export async function updateAbout(id: string, data: {
+  title: string;
+  description: string;
+  vision: string;
+  mission: string[];
+  history: string;
+}) {
+  const result = await prisma.landingAbout.update({
+    where: { id },
+    data,
+  });
+  revalidatePath('/');
+  return { success: true, data: result };
+}

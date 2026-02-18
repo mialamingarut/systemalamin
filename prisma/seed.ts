@@ -392,6 +392,29 @@ async function main() {
 
   console.log('✅ Landing page CMS seeded');
 
+  // Landing About
+  await prisma.landingAbout.upsert({
+    where: { id: 'default-about' },
+    update: {},
+    create: {
+      id: 'default-about',
+      title: 'Tentang MI Al-Amin',
+      description: 'Madrasah Ibtidaiyah Al-Amin adalah lembaga pendidikan Islam yang berkomitmen untuk membentuk generasi Qurani yang berprestasi, berakhlak mulia, dan siap menghadapi tantangan masa depan.',
+      vision: 'Menjadi madrasah ibtidaiyah terdepan yang menghasilkan generasi Qurani, berprestasi, dan berakhlak mulia.',
+      mission: [
+        'Menyelenggarakan pendidikan Islam yang berkualitas dan berkarakter',
+        'Mengembangkan potensi akademik dan non-akademik siswa secara optimal',
+        'Membentuk siswa yang hafal Al-Quran dan mengamalkan nilai-nilai Islam',
+        'Menciptakan lingkungan belajar yang kondusif dan menyenangkan',
+        'Membangun kerjasama yang baik dengan orang tua dan masyarakat',
+      ],
+      history: 'MI Al-Amin didirikan pada tahun 2011 dengan visi menjadi lembaga pendidikan Islam terdepan. Berawal dari 2 kelas dengan 40 siswa, kini telah berkembang menjadi madrasah dengan lebih dari 500 siswa dan 25 guru profesional. Prestasi demi prestasi terus diraih baik di bidang akademik maupun non-akademik.',
+      isActive: true,
+    },
+  });
+
+  console.log('✅ Landing about seeded');
+
   console.log('🎉 Seeding completed!');
   console.log('\n📝 Login credentials:');
   console.log('Admin: admin@mialamin.sch.id / admin123');

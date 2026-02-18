@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Image as ImageIcon, Star, Award, MessageSquare } from 'lucide-react';
+import { Image as ImageIcon, Star, Award, MessageSquare, BookOpen } from 'lucide-react';
 
 export default function LandingOverviewPage() {
   const sections = [
@@ -9,6 +9,13 @@ export default function LandingOverviewPage() {
       href: '/dashboard/landing/hero',
       icon: Star,
       color: 'bg-blue-500',
+    },
+    {
+      title: 'Tentang & Keunggulan',
+      description: 'Kelola visi, misi, sejarah, dan keunggulan sekolah',
+      href: '/dashboard/landing/about',
+      icon: BookOpen,
+      color: 'bg-indigo-500',
     },
     {
       title: 'Galeri Foto',
