@@ -41,6 +41,7 @@ export default function Sidebar() {
     { label: 'Galeri', href: '/dashboard/landing/gallery' },
     { label: 'Program', href: '/dashboard/landing/programs' },
     { label: 'Testimoni', href: '/dashboard/landing/testimonials' },
+    { label: 'CTA & Pendaftaran', href: '/dashboard/landing/cta' },
   ];
 
   return (
@@ -49,7 +50,8 @@ export default function Sidebar() {
         collapsed ? 'w-20' : 'w-64'
       } flex flex-col h-screen sticky top-0`}
     >
-      <div className="p-6 flex items-center justify-between border-b border-white/10">
+      {/* Fixed Logo Header */}
+      <div className="p-6 flex items-center justify-between border-b border-white/10 flex-shrink-0">
         {!collapsed && (
           <div className="flex items-center space-x-3">
             <div className="w-12 h-12 rounded-lg flex items-center justify-center overflow-hidden">
@@ -91,7 +93,8 @@ export default function Sidebar() {
         </button>
       </div>
 
-      <nav className="flex-1 p-4 space-y-2">
+      {/* Scrollable Navigation */}
+      <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
         {menuItems.map((item) => {
           const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
           return (
@@ -155,7 +158,8 @@ export default function Sidebar() {
         </div>
       </nav>
 
-      <div className="p-4 border-t border-white/10">
+      {/* Fixed User Profile */}
+      <div className="p-4 border-t border-white/10 flex-shrink-0">
         <div className={`flex items-center space-x-3 ${collapsed ? 'justify-center' : ''}`}>
           <div className="w-10 h-10 bg-primary-700 rounded-full flex items-center justify-center">
             <span className="text-sm font-semibold">AD</span>

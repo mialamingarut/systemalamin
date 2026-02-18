@@ -261,7 +261,7 @@ async function main() {
     update: {},
     create: {
       key: 'school_address',
-      value: 'Jl. Pendidikan No. 123, Jakarta Selatan',
+      value: 'Jl. Otista No.214, Langensari, Kec. Tarogong Kaler, Kabupaten Garut, Jawa Barat 44151',
       description: 'Alamat sekolah',
     },
   });
@@ -293,6 +293,36 @@ async function main() {
       key: 'spp_amount',
       value: '250000',
       description: 'Nominal SPP per bulan',
+    },
+  });
+
+  await prisma.systemConfig.upsert({
+    where: { key: 'social_facebook' },
+    update: {},
+    create: {
+      key: 'social_facebook',
+      value: '#',
+      description: 'Link Facebook sekolah',
+    },
+  });
+
+  await prisma.systemConfig.upsert({
+    where: { key: 'social_instagram' },
+    update: {},
+    create: {
+      key: 'social_instagram',
+      value: '#',
+      description: 'Link Instagram sekolah',
+    },
+  });
+
+  await prisma.systemConfig.upsert({
+    where: { key: 'social_youtube' },
+    update: {},
+    create: {
+      key: 'social_youtube',
+      value: '#',
+      description: 'Link YouTube sekolah',
     },
   });
 
@@ -414,6 +444,29 @@ async function main() {
   });
 
   console.log('✅ Landing about seeded');
+
+  // Create Landing CTA
+  await prisma.landingCTA.upsert({
+    where: { id: 'default-cta' },
+    update: {},
+    create: {
+      id: 'default-cta',
+      title: 'Daftarkan Putra-Putri Anda Sekarang!',
+      subtitle: 'Pendaftaran Dibuka',
+      description: 'Bergabunglah dengan keluarga besar MI Al-Amin dan berikan pendidikan terbaik untuk masa depan gemilang anak Anda. Kuota terbatas!',
+      benefits: [
+        'Diskon biaya pendaftaran 20%',
+        'Gratis seragam lengkap',
+        'Prioritas pemilihan kelas',
+        'Konsultasi gratis dengan psikolog',
+        'Akses fasilitas lengkap',
+        'Bimbingan tahfidz intensif',
+      ],
+      isActive: true,
+    },
+  });
+
+  console.log('✅ Landing CTA seeded');
 
   console.log('🎉 Seeding completed!');
   console.log('\n📝 Login credentials:');

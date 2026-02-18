@@ -279,6 +279,7 @@ export async function updateSystemConfig(
     })
 
     revalidatePath('/dashboard/settings')
+    revalidatePath('/') // Revalidate landing page
 
     return {
       success: true,

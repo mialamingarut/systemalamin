@@ -9,14 +9,15 @@ import TestimonialSection from "@/components/sections/TestimonialSection";
 import CTASection from "@/components/sections/CTASection";
 import Footer from "@/components/layout/Footer";
 import { getTeachersForLanding } from "@/app/actions/teachers";
-import { getLandingData } from "@/app/actions/landing";
+import { getLandingData, getSystemConfig } from "@/app/actions/landing";
 
 export const dynamic = 'force-dynamic';
 
 export default async function Home() {
-  const [teachers, landingData] = await Promise.all([
+  const [teachers, landingData, systemConfig] = await Promise.all([
     getTeachersForLanding(),
     getLandingData(),
+    getSystemConfig(),
   ]);
 
   return (
@@ -29,8 +30,8 @@ export default async function Home() {
       <TeachersSection teachers={teachers} />
       <GallerySection gallery={landingData.gallery} />
       <TestimonialSection testimonials={landingData.testimonials} />
-      <CTASection />
-      <Footer />
+      <CTASection cta={landingData.cta} config={systemConfig} />
+      <Footer config={systemConfig} />
     </main>
   );
 }

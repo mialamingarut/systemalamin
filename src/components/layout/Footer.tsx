@@ -4,7 +4,19 @@ import Link from 'next/link';
 import { Facebook, Instagram, Youtube, Mail, Phone, MapPin, ChevronRight } from 'lucide-react';
 import Image from 'next/image';
 
-export default function Footer() {
+interface FooterProps {
+  config: {
+    schoolName: string;
+    schoolAddress: string;
+    schoolPhone: string;
+    schoolEmail: string;
+    socialFacebook: string;
+    socialInstagram: string;
+    socialYoutube: string;
+  };
+}
+
+export default function Footer({ config }: FooterProps) {
   const currentYear = new Date().getFullYear();
 
   const quickLinks = [
@@ -56,13 +68,13 @@ export default function Footer() {
             </p>
             {/* Social Media */}
             <div className="flex space-x-3">
-              <a href="#" className="w-10 h-10 bg-white/10 hover:bg-primary-600 rounded-lg flex items-center justify-center transition-colors">
+              <a href={config.socialFacebook} className="w-10 h-10 bg-white/10 hover:bg-primary-600 rounded-lg flex items-center justify-center transition-colors">
                 <Facebook className="w-5 h-5" />
               </a>
-              <a href="#" className="w-10 h-10 bg-white/10 hover:bg-primary-600 rounded-lg flex items-center justify-center transition-colors">
+              <a href={config.socialInstagram} className="w-10 h-10 bg-white/10 hover:bg-primary-600 rounded-lg flex items-center justify-center transition-colors">
                 <Instagram className="w-5 h-5" />
               </a>
-              <a href="#" className="w-10 h-10 bg-white/10 hover:bg-primary-600 rounded-lg flex items-center justify-center transition-colors">
+              <a href={config.socialYoutube} className="w-10 h-10 bg-white/10 hover:bg-primary-600 rounded-lg flex items-center justify-center transition-colors">
                 <Youtube className="w-5 h-5" />
               </a>
             </div>
@@ -110,18 +122,18 @@ export default function Footer() {
             <ul className="space-y-4">
               <li className="flex items-start space-x-3 text-gray-400">
                 <MapPin className="w-5 h-5 text-primary-400 flex-shrink-0 mt-0.5" />
-                <span>Jl. Otista No.214, Langensari, Kec. Tarogong Kaler, Kabupaten Garut, Jawa Barat 44151</span>
+                <span>{config.schoolAddress}</span>
               </li>
               <li className="flex items-center space-x-3 text-gray-400">
                 <Phone className="w-5 h-5 text-primary-400 flex-shrink-0" />
-                <a href="tel:+6281234567890" className="hover:text-primary-400 transition-colors">
-                  +62 812-3456-7890
+                <a href={`tel:+62${config.schoolPhone.replace(/^0/, '')}`} className="hover:text-primary-400 transition-colors">
+                  {config.schoolPhone}
                 </a>
               </li>
               <li className="flex items-center space-x-3 text-gray-400">
                 <Mail className="w-5 h-5 text-primary-400 flex-shrink-0" />
-                <a href="mailto:info@mialamin.sch.id" className="hover:text-primary-400 transition-colors">
-                  info@mialamin.sch.id
+                <a href={`mailto:${config.schoolEmail}`} className="hover:text-primary-400 transition-colors">
+                  {config.schoolEmail}
                 </a>
               </li>
             </ul>
@@ -132,7 +144,7 @@ export default function Footer() {
         <div className="py-6 border-t border-white/10">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <p className="text-gray-400 text-sm text-center md:text-left">
-              © {currentYear} MI Al-Amin. All rights reserved.
+              © {currentYear} {config.schoolName}. All rights reserved.
             </p>
             <div className="flex space-x-6 text-sm">
               <Link href="#" className="text-gray-400 hover:text-primary-400 transition-colors">

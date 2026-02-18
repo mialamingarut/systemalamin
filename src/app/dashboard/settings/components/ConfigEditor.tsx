@@ -60,6 +60,7 @@ export function ConfigEditor({ configs, onUpdate }: ConfigEditorProps) {
 
   const categoryLabels: Record<string, string> = {
     school: 'Informasi Sekolah',
+    social: 'Media Sosial',
     spp: 'Konfigurasi Keuangan',
     financial: 'Konfigurasi Keuangan',
     general: 'Umum',

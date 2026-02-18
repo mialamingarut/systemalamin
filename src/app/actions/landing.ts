@@ -2,8 +2,33 @@
 
 import { prisma } from '@/lib/prisma';
 
+export async function getSystemConfig() {
+  const configs = await prisma.systemConfig.findMany({
+    where: {
+      key: {
+        in: ['school_name', 'school_address', 'school_phone', 'school_email', 'social_facebook', 'social_instagram', 'social_youtube'],
+      },
+    },
+  });
+
+  const configMap = configs.reduce((acc, config) => {
+    acc[config.key] = config.value;
+    return acc;
+  }, {} as Record<string, string>);
+
+  return {
+    schoolName: configMap.school_name || 'MI Al-Amin',
+    schoolAddress: configMap.school_address || 'Jl. Pendidikan No. 123, Jakarta Selatan',
+    schoolPhone: configMap.school_phone || '0812-3456-7890',
+    schoolEmail: configMap.school_email || 'info@mialamin.sch.id',
+    socialFacebook: configMap.social_facebook || '#',
+    socialInstagram: configMap.social_instagram || '#',
+    socialYoutube: configMap.social_youtube || '#',
+  };
+}
+
 export async function getLandingData() {
-  const [hero, stats, programs, testimonials, gallery, about, features] = await Promise.all([
+  const [hero, stats, programs, testimonials, gallery, about, features, cta] = await Promise.all([
     prisma.landingHero.findFirst({ where: { isActive: true } }),
     prisma.landingStats.findFirst({ where: { isActive: true } }),
     prisma.landingProgram.findMany({
@@ -26,6 +51,7 @@ export async function getLandingData() {
       where: { deletedAt: null, isActive: true },
       orderBy: { order: 'asc' },
     }),
+    prisma.landingCTA.findFirst({ where: { isActive: true } }),
   ]);
 
   return {
@@ -51,5 +77,18 @@ export async function getLandingData() {
       history: '',
     },
     features,
+    cta: cta || {
+      title: 'Daftarkan Putra-Putri Anda Sekarang!',
+      subtitle: 'Pendaftaran Dibuka',
+      description: 'Bergabunglah dengan keluarga besar MI Al-Amin dan berikan pendidikan terbaik untuk masa depan gemilang anak Anda. Kuota terbatas!',
+      benefits: [
+        'Diskon biaya pendaftaran 20%',
+        'Gratis seragam lengkap',
+        'Prioritas pemilihan kelas',
+        'Konsultasi gratis dengan psikolog',
+        'Akses fasilitas lengkap',
+        'Bimbingan tahfidz intensif',
+      ],
+    },
   };
 }

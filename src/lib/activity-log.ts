@@ -16,6 +16,14 @@ export type ActivityEntity =
   | 'SystemConfig'
   | 'User'
   | 'Auth'
+  | 'LandingHero'
+  | 'LandingStats'
+  | 'LandingProgram'
+  | 'LandingGallery'
+  | 'LandingTestimonial'
+  | 'LandingAbout'
+  | 'LandingFeature'
+  | 'LandingCTA'
 
 interface LogActivityParams {
   userId: string

@@ -3,6 +3,13 @@
 import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 import { saveUploadedFile } from '@/lib/upload';
+import { logActivity } from '@/lib/activity-log';
+
+interface ActionResult<T = void> {
+  success: boolean;
+  data?: T;
+  error?: string;
+}
 
 // Hero Actions
 export async function getHero() {
@@ -356,4 +363,52 @@ export async function updateAbout(id: string, data: {
   });
   revalidatePath('/');
   return { success: true, data: result };
+}
+
+
+// ============ CTA Management ============
+
+export async function getCTA() {
+  try {
+    const cta = await prisma.landingCTA.findFirst({
+      where: { isActive: true },
+    });
+    return cta;
+  } catch (error) {
+    console.error('Failed to fetch CTA:', error);
+    throw new Error('Failed to fetch CTA');
+  }
+}
+
+export async function updateCTA(id: string, data: {
+  title: string;
+  subtitle: string;
+  description: string;
+  benefits: string[];
+}): Promise<ActionResult<void>> {
+  try {
+    await prisma.landingCTA.update({
+      where: { id },
+      data,
+    });
+
+    await logActivity({
+      userId: 'system',
+      action: 'UPDATE',
+      entity: 'LandingCTA',
+      entityId: id,
+      details: 'Updated CTA section',
+    });
+
+    revalidatePath('/');
+    revalidatePath('/dashboard/landing');
+
+    return { success: true };
+  } catch (error) {
+    console.error('Failed to update CTA:', error);
+    return {
+      success: false,
+      error: 'Failed to update CTA',
+    };
+  }
 }

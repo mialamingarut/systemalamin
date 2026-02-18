@@ -4,7 +4,21 @@ import { ChevronRight, Phone, Mail, MapPin } from 'lucide-react';
 import AnimatedSection from '@/components/ui/AnimatedSection';
 import Link from 'next/link';
 
-export default function CTASection() {
+type CTASectionProps = {
+  cta: {
+    title: string;
+    subtitle: string;
+    description: string;
+    benefits: string[];
+  };
+  config: {
+    schoolPhone: string;
+    schoolEmail: string;
+    schoolAddress: string;
+  };
+};
+
+export default function CTASection({ cta, config }: CTASectionProps) {
   return (
     <section id="cta" className="py-24 relative overflow-hidden">
       {/* Background Gradient */}
@@ -29,13 +43,13 @@ export default function CTASection() {
           <AnimatedSection direction="left">
             <div className="text-white">
               <span className="inline-block px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-sm font-semibold mb-6">
-                Pendaftaran Dibuka
+                {cta.subtitle}
               </span>
               <h2 className="font-display font-bold text-4xl md:text-5xl mb-6 leading-tight">
-                Daftarkan Putra-Putri Anda Sekarang!
+                {cta.title}
               </h2>
               <p className="text-lg text-white/90 mb-8 leading-relaxed">
-                Bergabunglah dengan keluarga besar MI Al-Amin dan berikan pendidikan terbaik untuk masa depan gemilang anak Anda. Kuota terbatas!
+                {cta.description}
               </p>
 
               {/* CTA Buttons */}
@@ -48,7 +62,7 @@ export default function CTASection() {
                   <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
                 <a
-                  href="tel:+6281234567890"
+                  href={`tel:+62${config.schoolPhone.replace(/^0/, '')}`}
                   className="px-8 py-4 bg-white/10 backdrop-blur-sm text-white rounded-xl font-semibold hover:bg-white/20 transition-all flex items-center justify-center space-x-2 border-2 border-white/30"
                 >
                   <Phone className="w-5 h-5" />
@@ -60,15 +74,15 @@ export default function CTASection() {
               <div className="space-y-3">
                 <div className="flex items-center space-x-3 text-white/90">
                   <Phone className="w-5 h-5 flex-shrink-0" />
-                  <span>+62 812-3456-7890</span>
+                  <span>{config.schoolPhone}</span>
                 </div>
                 <div className="flex items-center space-x-3 text-white/90">
                   <Mail className="w-5 h-5 flex-shrink-0" />
-                  <span>info@mialamin.sch.id</span>
+                  <span>{config.schoolEmail}</span>
                 </div>
                 <div className="flex items-start space-x-3 text-white/90">
                   <MapPin className="w-5 h-5 flex-shrink-0 mt-0.5" />
-                  <span>Jl. Otista No.214, Langensari, Kec. Tarogong Kaler, Kabupaten Garut, Jawa Barat 44151</span>
+                  <span>{config.schoolAddress}</span>
                 </div>
               </div>
             </div>
@@ -81,14 +95,7 @@ export default function CTASection() {
                 Keuntungan Mendaftar Sekarang
               </h3>
               <div className="space-y-4">
-                {[
-                  'Diskon biaya pendaftaran 20%',
-                  'Gratis seragam lengkap',
-                  'Prioritas pemilihan kelas',
-                  'Konsultasi gratis dengan psikolog',
-                  'Akses fasilitas lengkap',
-                  'Bimbingan tahfidz intensif',
-                ].map((benefit, index) => (
+                {cta.benefits.map((benefit, index) => (
                   <div key={index} className="flex items-start space-x-3">
                     <div className="w-6 h-6 bg-gold-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
                       <ChevronRight className="w-4 h-4 text-white" />
