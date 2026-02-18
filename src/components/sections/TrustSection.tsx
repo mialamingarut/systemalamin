@@ -4,8 +4,14 @@ import { Award, Users, GraduationCap, Calendar } from 'lucide-react';
 import AnimatedSection from '@/components/ui/AnimatedSection';
 import CountUp from '@/components/ui/CountUp';
 
-export default function TrustSection() {
-  const stats = [
+type Stats = {
+  students: number;
+  teachers: number;
+  years: number;
+};
+
+export default function TrustSection({ stats }: { stats: Stats }) {
+  const statsData = [
     {
       icon: Award,
       value: 'A',
@@ -14,21 +20,21 @@ export default function TrustSection() {
     },
     {
       icon: Users,
-      value: 500,
+      value: stats.students,
       suffix: '+',
       label: 'Siswa Aktif',
       color: 'from-blue-500 to-blue-600',
     },
     {
       icon: GraduationCap,
-      value: 25,
+      value: stats.teachers,
       suffix: '+',
       label: 'Guru Profesional',
       color: 'from-gold-500 to-gold-600',
     },
     {
       icon: Calendar,
-      value: 15,
+      value: stats.years,
       label: 'Tahun Pengalaman',
       color: 'from-rose-500 to-rose-600',
     },
@@ -45,7 +51,7 @@ export default function TrustSection() {
 
       <div className="container mx-auto px-4 max-w-7xl relative z-10">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-          {stats.map((stat, index) => (
+          {statsData.map((stat, index) => (
             <AnimatedSection key={index} delay={index * 0.1}>
               <div className="group bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-primary-200">
                 <div className={`w-14 h-14 bg-gradient-to-br ${stat.color} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>

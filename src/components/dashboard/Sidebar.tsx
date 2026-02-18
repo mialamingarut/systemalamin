@@ -21,8 +21,8 @@ import {
 
 export default function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
-  const [landingMenuOpen, setLandingMenuOpen] = useState(false);
   const pathname = usePathname();
+  const [landingMenuOpen, setLandingMenuOpen] = useState(pathname.startsWith('/dashboard/landing'));
 
   const menuItems = [
     { icon: LayoutDashboard, label: 'Dashboard', href: '/dashboard' },

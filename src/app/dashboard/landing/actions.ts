@@ -56,8 +56,18 @@ export async function createGalleryItem(formData: FormData) {
     const description = formData.get('description') as string;
     const category = formData.get('category') as string;
 
-    if (!file) {
-      return { success: false, error: 'File tidak ditemukan' };
+    if (!file || file.size === 0) {
+      return { success: false, error: 'File tidak ditemukan atau kosong' };
+    }
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      return { success: false, error: 'File harus berupa gambar' };
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      return { success: false, error: 'Ukuran file maksimal 5MB' };
     }
 
     const imageUrl = await saveUploadedFile(file, 'gallery');
@@ -70,17 +80,19 @@ export async function createGalleryItem(formData: FormData) {
     const result = await prisma.landingGallery.create({
       data: {
         title,
-        description,
+        description: description || null,
         image: imageUrl,
-        category,
+        category: category || null,
         order: (maxOrder?.order || 0) + 1,
       },
     });
 
     revalidatePath('/');
+    revalidatePath('/dashboard/landing/gallery');
     return { success: true, data: result };
   } catch (error: any) {
-    return { success: false, error: error.message };
+    console.error('Gallery upload error:', error);
+    return { success: false, error: `Gagal upload foto: ${error.message}` };
   }
 }
 

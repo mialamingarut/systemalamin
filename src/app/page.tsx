@@ -23,7 +23,7 @@ export default async function Home() {
     <main className="min-h-screen bg-white">
       <Navbar />
       <HeroSection hero={landingData.hero} stats={landingData.stats} />
-      <TrustSection />
+      <TrustSection stats={landingData.stats} />
       <AboutSection about={landingData.about} features={landingData.features} />
       <ProgramSection programs={landingData.programs} />
       <TeachersSection teachers={teachers} />
