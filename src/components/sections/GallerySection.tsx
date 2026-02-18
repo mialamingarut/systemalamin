@@ -1,6 +1,6 @@
 'use client';
 
-import { ImageIcon, ZoomIn } from 'lucide-react';
+import { ImageIcon } from 'lucide-react';
 import AnimatedSection from '@/components/ui/AnimatedSection';
 import Image from 'next/image';
 
@@ -84,13 +84,6 @@ export default function GallerySection({ gallery }: GallerySectionProps) {
                         {item.description}
                       </p>
                     )}
-                  </div>
-
-                  {/* Zoom Icon - Show on Hover */}
-                  <div className="absolute top-6 right-6 opacity-0 group-hover:opacity-100 transform scale-0 group-hover:scale-100 transition-all duration-500">
-                    <div className="w-12 h-12 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center border-2 border-white/40">
-                      <ZoomIn className="w-6 h-6 text-white" />
-                    </div>
                   </div>
 
                   {/* Shine Effect on Hover */}
