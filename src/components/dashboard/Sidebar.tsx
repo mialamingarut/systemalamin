@@ -15,10 +15,13 @@ import {
   ChevronLeft,
   ChevronRight,
   Globe,
+  ChevronDown,
+  ChevronUp,
 } from 'lucide-react';
 
 export default function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
+  const [landingMenuOpen, setLandingMenuOpen] = useState(false);
   const pathname = usePathname();
 
   const menuItems = [
@@ -29,8 +32,15 @@ export default function Sidebar() {
     { icon: FileText, label: 'SPMB', href: '/dashboard/spmb' },
     { icon: DollarSign, label: 'Keuangan', href: '/dashboard/finance' },
     { icon: Calendar, label: 'Akademik', href: '/dashboard/academic' },
-    { icon: Globe, label: 'Landing Page', href: '/dashboard/landing/hero' },
     { icon: Settings, label: 'Pengaturan', href: '/dashboard/settings' },
+  ];
+
+  const landingSubItems = [
+    { label: 'Hero & Statistik', href: '/dashboard/landing/hero' },
+    { label: 'Tentang & Keunggulan', href: '/dashboard/landing/about' },
+    { label: 'Galeri', href: '/dashboard/landing/gallery' },
+    { label: 'Program', href: '/dashboard/landing/programs' },
+    { label: 'Testimoni', href: '/dashboard/landing/testimonials' },
   ];
 
   return (
@@ -100,6 +110,49 @@ export default function Sidebar() {
             </Link>
           );
         })}
+
+        {/* Landing Page Menu with Submenu */}
+        <div>
+          <button
+            onClick={() => setLandingMenuOpen(!landingMenuOpen)}
+            className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all ${
+              pathname.startsWith('/dashboard/landing')
+                ? 'bg-white/20 text-white shadow-lg'
+                : 'text-primary-100 hover:bg-white/10 hover:text-white'
+            }`}
+            title={collapsed ? 'Landing Page' : ''}
+          >
+            <div className="flex items-center space-x-3">
+              <Globe size={20} className="flex-shrink-0" />
+              {!collapsed && <span className="font-medium">Landing Page</span>}
+            </div>
+            {!collapsed && (
+              landingMenuOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />
+            )}
+          </button>
+
+          {/* Submenu */}
+          {!collapsed && landingMenuOpen && (
+            <div className="ml-4 mt-2 space-y-1">
+              {landingSubItems.map((subItem) => {
+                const isActive = pathname === subItem.href;
+                return (
+                  <Link
+                    key={subItem.href}
+                    href={subItem.href}
+                    className={`block px-4 py-2 rounded-lg text-sm transition-all ${
+                      isActive
+                        ? 'bg-white/10 text-white font-medium'
+                        : 'text-primary-100 hover:bg-white/5 hover:text-white'
+                    }`}
+                  >
+                    {subItem.label}
+                  </Link>
+                );
+              })}
+            </div>
+          )}
+        </div>
       </nav>
 
       <div className="p-4 border-t border-white/10">
