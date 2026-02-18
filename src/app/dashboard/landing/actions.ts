@@ -171,11 +171,12 @@ export async function createProgram(formData: FormData) {
   try {
     const title = formData.get('title') as string;
     const description = formData.get('description') as string;
-    const features = JSON.parse(formData.get('features') as string);
+    const featuresText = formData.get('features') as string;
+    const features = featuresText.split('\n').map(f => f.trim()).filter(f => f.length > 0);
     const file = formData.get('file') as File | null;
 
     let imageUrl = null;
-    if (file) {
+    if (file && file.size > 0) {
       imageUrl = await saveUploadedFile(file, 'programs');
     }
 
@@ -205,7 +206,8 @@ export async function updateProgram(id: string, formData: FormData) {
   try {
     const title = formData.get('title') as string;
     const description = formData.get('description') as string;
-    const features = JSON.parse(formData.get('features') as string);
+    const featuresText = formData.get('features') as string;
+    const features = featuresText.split('\n').map(f => f.trim()).filter(f => f.length > 0);
     const file = formData.get('file') as File | null;
 
     const data: any = {
@@ -214,7 +216,7 @@ export async function updateProgram(id: string, formData: FormData) {
       features,
     };
 
-    if (file) {
+    if (file && file.size > 0) {
       data.image = await saveUploadedFile(file, 'programs');
     }
 

@@ -9,20 +9,26 @@ import TestimonialSection from "@/components/sections/TestimonialSection";
 import CTASection from "@/components/sections/CTASection";
 import Footer from "@/components/layout/Footer";
 import { getTeachersForLanding } from "@/app/actions/teachers";
+import { getLandingData } from "@/app/actions/landing";
+
+export const dynamic = 'force-dynamic';
 
 export default async function Home() {
-  const teachers = await getTeachersForLanding();
+  const [teachers, landingData] = await Promise.all([
+    getTeachersForLanding(),
+    getLandingData(),
+  ]);
 
   return (
     <main className="min-h-screen bg-white">
       <Navbar />
-      <HeroSection />
+      <HeroSection hero={landingData.hero} stats={landingData.stats} />
       <TrustSection />
       <AboutSection />
-      <ProgramSection />
+      <ProgramSection programs={landingData.programs} />
       <TeachersSection teachers={teachers} />
-      <GallerySection />
-      <TestimonialSection />
+      <GallerySection gallery={landingData.gallery} />
+      <TestimonialSection testimonials={landingData.testimonials} />
       <CTASection />
       <Footer />
     </main>

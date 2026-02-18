@@ -5,7 +5,21 @@ import Link from 'next/link';
 import { ChevronRight, Play, Award, Users, BookOpen } from 'lucide-react';
 import CountUp from '@/components/ui/CountUp';
 
-export default function HeroSection() {
+type HeroSectionProps = {
+  hero: {
+    headline: string;
+    subheadline: string;
+    ctaPrimary: string;
+    ctaSecondary: string | null;
+  };
+  stats: {
+    students: number;
+    teachers: number;
+    years: number;
+  };
+};
+
+export default function HeroSection({ hero, stats }: HeroSectionProps) {
   return (
     <section id="home" className="relative min-h-screen flex items-center overflow-hidden bg-gradient-to-br from-primary-50 via-white to-gold-50">
       {/* Islamic Pattern Background */}
@@ -69,10 +83,7 @@ export default function HeroSection() {
               transition={{ delay: 0.3 }}
               className="font-display font-bold text-4xl md:text-5xl lg:text-6xl mb-6 leading-tight"
             >
-              Membentuk Generasi{' '}
-              <span className="bg-gradient-to-r from-primary-600 via-primary-500 to-gold-500 bg-clip-text text-transparent">
-                Qurani Berprestasi
-              </span>
+              {hero.headline}
             </motion.h1>
 
             {/* Subheadline */}
@@ -82,7 +93,7 @@ export default function HeroSection() {
               transition={{ delay: 0.4 }}
               className="text-lg md:text-xl text-gray-600 mb-8 leading-relaxed max-w-2xl mx-auto lg:mx-0"
             >
-              Madrasah Ibtidaiyah terdepan yang memadukan pendidikan Islam berkualitas dengan prestasi akademik unggul untuk masa depan gemilang putra-putri Anda.
+              {hero.subheadline}
             </motion.p>
 
             {/* CTA Buttons */}
@@ -96,13 +107,15 @@ export default function HeroSection() {
                 href="#cta"
                 className="group px-8 py-4 bg-gradient-to-r from-primary-600 to-primary-700 text-white rounded-xl font-semibold hover:shadow-2xl hover:scale-105 transition-all flex items-center justify-center space-x-2"
               >
-                <span>Daftar Sekarang</span>
+                <span>{hero.ctaPrimary}</span>
                 <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
-              <button className="group px-8 py-4 bg-white text-primary-700 rounded-xl font-semibold hover:shadow-xl transition-all flex items-center justify-center space-x-2 border-2 border-primary-100">
-                <Play className="w-5 h-5" />
-                <span>Lihat Video</span>
-              </button>
+              {hero.ctaSecondary && (
+                <button className="group px-8 py-4 bg-white text-primary-700 rounded-xl font-semibold hover:shadow-xl transition-all flex items-center justify-center space-x-2 border-2 border-primary-100">
+                  <Play className="w-5 h-5" />
+                  <span>{hero.ctaSecondary}</span>
+                </button>
+              )}
             </motion.div>
 
             {/* Quick Stats */}
@@ -116,7 +129,7 @@ export default function HeroSection() {
                 <div className="flex items-center justify-center lg:justify-start space-x-2 mb-1">
                   <Users className="w-5 h-5 text-primary-600" />
                   <p className="font-bold text-2xl text-gray-900">
-                    <CountUp end={500} suffix="+" />
+                    <CountUp end={stats.students} suffix="+" />
                   </p>
                 </div>
                 <p className="text-sm text-gray-600">Siswa Aktif</p>
@@ -125,7 +138,7 @@ export default function HeroSection() {
                 <div className="flex items-center justify-center lg:justify-start space-x-2 mb-1">
                   <BookOpen className="w-5 h-5 text-primary-600" />
                   <p className="font-bold text-2xl text-gray-900">
-                    <CountUp end={25} suffix="+" />
+                    <CountUp end={stats.teachers} suffix="+" />
                   </p>
                 </div>
                 <p className="text-sm text-gray-600">Guru Profesional</p>
@@ -134,7 +147,7 @@ export default function HeroSection() {
                 <div className="flex items-center justify-center lg:justify-start space-x-2 mb-1">
                   <Award className="w-5 h-5 text-primary-600" />
                   <p className="font-bold text-2xl text-gray-900">
-                    <CountUp end={15} />
+                    <CountUp end={stats.years} />
                   </p>
                 </div>
                 <p className="text-sm text-gray-600">Tahun Berpengalaman</p>

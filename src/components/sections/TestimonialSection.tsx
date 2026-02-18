@@ -2,31 +2,23 @@
 
 import { Star, Quote, User } from 'lucide-react';
 import AnimatedSection from '@/components/ui/AnimatedSection';
+import Image from 'next/image';
 
-export default function TestimonialSection() {
-  const testimonials = [
-    {
-      name: 'Ibu Siti Aminah',
-      role: 'Orang Tua Siswa Kelas 5',
-      content: 'Alhamdulillah, anak saya berkembang sangat baik di MI Al-Amin. Tidak hanya pintar secara akademik, tapi juga akhlaknya semakin baik. Guru-gurunya sangat perhatian dan profesional.',
-      rating: 5,
-      avatar: null,
-    },
-    {
-      name: 'Bapak Ahmad Fauzi',
-      role: 'Orang Tua Siswa Kelas 3',
-      content: 'Program tahfidz di MI Al-Amin sangat bagus. Anak saya sudah hafal 2 juz dalam waktu 2 tahun. Metode pembelajarannya menyenangkan dan tidak membebani anak.',
-      rating: 5,
-      avatar: null,
-    },
-    {
-      name: 'Ibu Fatimah Zahra',
-      role: 'Orang Tua Siswa Kelas 6',
-      content: 'Fasilitas lengkap, lingkungan bersih dan nyaman. Anak saya sangat senang belajar di sini. Prestasi akademiknya juga meningkat pesat. Terima kasih MI Al-Amin!',
-      rating: 5,
-      avatar: null,
-    },
-  ];
+type Testimonial = {
+  id: string;
+  name: string;
+  role: string;
+  content: string;
+  avatar: string | null;
+  rating: number;
+};
+
+type TestimonialSectionProps = {
+  testimonials: Testimonial[];
+};
+
+export default function TestimonialSection({ testimonials }: TestimonialSectionProps) {
+  if (testimonials.length === 0) return null;
 
   return (
     <section id="testimonial" className="py-24 bg-gradient-to-b from-white to-primary-50/30 relative overflow-hidden">
@@ -51,7 +43,7 @@ export default function TestimonialSection() {
         {/* Testimonials Grid */}
         <div className="grid md:grid-cols-3 gap-8">
           {testimonials.map((testimonial, index) => (
-            <AnimatedSection key={index} delay={index * 0.1}>
+            <AnimatedSection key={testimonial.id} delay={index * 0.1}>
               <div className="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-primary-200 h-full relative">
                 {/* Quote Icon */}
                 <div className="absolute top-6 right-6 opacity-10 group-hover:opacity-20 transition-opacity">
@@ -72,9 +64,9 @@ export default function TestimonialSection() {
 
                 {/* Author */}
                 <div className="flex items-center space-x-4 pt-6 border-t border-gray-100">
-                  <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden">
                     {testimonial.avatar ? (
-                      <img src={testimonial.avatar} alt={testimonial.name} className="w-full h-full rounded-full object-cover" />
+                      <Image src={testimonial.avatar} alt={testimonial.name} fill className="object-cover" />
                     ) : (
                       <User className="w-6 h-6 text-white" />
                     )}
